@@ -22,7 +22,7 @@ public class GridManager : MonoBehaviour
     private void Awake()
     {
         GenerateTiles();
-        GenerateRandomHex();
+        GenerateRandomHexes();
     }
 
     void GenerateTiles()
@@ -32,54 +32,62 @@ public class GridManager : MonoBehaviour
 
         for (int y = 0; y < rowsSize; y++)
         {
-            GameObject newYHex = Instantiate(positionHolder.gameObject, gridParent.transform.position, Quaternion.identity);
-            newYHex.transform.SetParent(gridParent.transform);
-            tileArray[0, y] = newYHex;
-            newYHex.GetComponent<Tile>().tileRow = y;
-            newYHex.name = 0 + " , " + y;
+            GameObject newYTile = Instantiate(positionHolder.gameObject, gridParent.transform.position, Quaternion.identity);
 
-            if (y == 0)
+            if (newYTile != null)
             {
-                newYHex.transform.position = new Vector3(-2.25f, -3.825f, 0);
-            }
-            else
-            {
-                newYHex.transform.position = new Vector3(lastYHex.transform.position.x, lastYHex.transform.position.y + 0.85f, 0);
-            }
-            lastYHex = newYHex;
+                newYTile.transform.SetParent(gridParent.transform);
+                tileArray[0, y] = newYTile;
+                newYTile.GetComponent<Tile>().tileRow = y;
+                newYTile.name = 0 + " , " + y;
 
-            for (int x = 0; x < columnsSize - 1; x++)
-            {
-                GameObject newXHex = Instantiate(positionHolder.gameObject, gridParent.transform.position, Quaternion.identity);
-                newXHex.transform.SetParent(gridParent);
-
-                tileArray[x + 1, y] = newXHex;
-                newXHex.name = (x + 1) + " , " + y;
-
-                newXHex.GetComponent<Tile>().tileColumn = x + 1;
-                newXHex.GetComponent<Tile>().tileRow = y;
-
-                if (x == 0)
+                if (y == 0)
                 {
-                    newXHex.transform.position = new Vector3(lastYHex.transform.position.x + 0.75f, lastYHex.transform.position.y + 0.425f, 0);
+                    newYTile.transform.position = new Vector3(-2.25f, -3.825f, 0);
                 }
                 else
                 {
-                    float newYtransform;
-
-                    if (x % 2 == 0)
-                    {
-                        newYtransform = lastXHex.transform.position.y + 0.425f;
-                    }
-                    else
-                    {
-                        newYtransform = lastXHex.transform.position.y + -0.425f;
-                    }
-
-                    newXHex.transform.position = new Vector3(lastXHex.transform.position.x + +0.75f, newYtransform, 0);
+                    newYTile.transform.position = new Vector3(lastYHex.transform.position.x, lastYHex.transform.position.y + 0.85f, 0);
                 }
+                lastYHex = newYTile;
 
-                lastXHex = newXHex;
+                for (int x = 0; x < columnsSize - 1; x++)
+                {
+                    GameObject newXTile = Instantiate(positionHolder.gameObject, gridParent.transform.position, Quaternion.identity);
+
+                    if (newXTile != null)
+                    {
+                        newXTile.transform.SetParent(gridParent);
+
+                        tileArray[x + 1, y] = newXTile;
+                        newXTile.name = (x + 1) + " , " + y;
+
+                        newXTile.GetComponent<Tile>().tileColumn = x + 1;
+                        newXTile.GetComponent<Tile>().tileRow = y;
+
+                        if (x == 0)
+                        {
+                            newXTile.transform.position = new Vector3(lastYHex.transform.position.x + 0.75f, lastYHex.transform.position.y + 0.425f, 0);
+                        }
+                        else
+                        {
+                            float newYtransform;
+
+                            if (x % 2 == 0)
+                            {
+                                newYtransform = lastXHex.transform.position.y + 0.425f;
+                            }
+                            else
+                            {
+                                newYtransform = lastXHex.transform.position.y + -0.425f;
+                            }
+
+                            newXTile.transform.position = new Vector3(lastXHex.transform.position.x + +0.75f, newYtransform, 0);
+                        }
+
+                        lastXHex = newXTile;
+                    }
+                }
             }
         }
     }
@@ -101,21 +109,23 @@ public class GridManager : MonoBehaviour
     void PlaceHexToTile(Hexagon hex, Color color, int x, int y)
     {
         hex.transform.SetParent(hexParent);
-
         hex.transform.position = new Vector3(tileArray[x,y].transform.position.x,
             tileArray[x, y].transform.position.y, 0);
+
+        hexArray[x, y] = hex.gameObject;
 
         hex.transform.rotation = Quaternion.identity;
 
         hex.SetColor(color);
-        hex.SetPosition(x, y);
+        hex.SetCoordinate(x, y);
     }
 
-    void GenerateRandomHex()
+    void GenerateRandomHexes()
     {
         for (int y = 0; y < rowsSize; y++)
         {
             GameObject randomHexRow = Instantiate(hexagon, gridParent.transform.position, Quaternion.identity);
+            randomHexRow.name = 0 + " , " + y;
 
             if (randomHexRow != null)
             {
@@ -129,6 +139,7 @@ public class GridManager : MonoBehaviour
                 if (randomHexColumn != null)
                 {
                     PlaceHexToTile(randomHexColumn.GetComponent<Hexagon>(),GetRandomColor(),x + 1, y);
+                    randomHexColumn.name = (x + 1) + " , " + y;
                 }
             }
         }

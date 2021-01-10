@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public GameObject selectedTile;
+    public GameObject selectedHex;
 
     public Color[] colors;
 
