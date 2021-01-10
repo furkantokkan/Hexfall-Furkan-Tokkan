@@ -16,23 +16,8 @@ public class Hexagon : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Move(4, 6, 1);
-        }
-    }
-    private void OnMouseOver()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            print("Selected");
-            GameManager.instance.selectedHex = this.gameObject;
-        }
-    }
 
-    public void SetCoordinate(int x, int y)
+    public void SetHexCoordinate(int x, int y)
     {
         column = x;
         row = y;
@@ -75,7 +60,7 @@ public class Hexagon : MonoBehaviour
             {
                 reached = true;
                 transform.position = destination;
-                SetCoordinate(x, y);
+                SetHexCoordinate(x, y);
                 break;
             }
 
@@ -91,5 +76,14 @@ public class Hexagon : MonoBehaviour
         }
 
         canMove = true;
+    }
+
+    private void OnMouseDown()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            GameManager.instance.selectedHex = this.gameObject;
+            HexSelectHandler.selectIndex++;
+        }
     }
 }

@@ -10,6 +10,10 @@ public class GameManager : MonoBehaviour
 
     public Color[] colors;
 
+    public GameObject[] selectedHexes = new GameObject[3];
+
+    public int selectIndex = 0;
+
     private void Awake()
     {
         if (instance == null)

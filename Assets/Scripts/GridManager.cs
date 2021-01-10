@@ -18,7 +18,6 @@ public class GridManager : MonoBehaviour
     public static GameObject[,] tileArray;
     public static GameObject[,] hexArray;
 
-
     private void Awake()
     {
         GenerateTiles();
@@ -38,7 +37,7 @@ public class GridManager : MonoBehaviour
             {
                 newYTile.transform.SetParent(gridParent.transform);
                 tileArray[0, y] = newYTile;
-                newYTile.GetComponent<Tile>().tileRow = y;
+                newYTile.GetComponent<Tile>().SetTileCoordinate(0, y);
                 newYTile.name = 0 + " , " + y;
 
                 if (y == 0)
@@ -62,8 +61,7 @@ public class GridManager : MonoBehaviour
                         tileArray[x + 1, y] = newXTile;
                         newXTile.name = (x + 1) + " , " + y;
 
-                        newXTile.GetComponent<Tile>().tileColumn = x + 1;
-                        newXTile.GetComponent<Tile>().tileRow = y;
+                        newXTile.GetComponent<Tile>().SetTileCoordinate(x + 1, y);
 
                         if (x == 0)
                         {
@@ -117,7 +115,7 @@ public class GridManager : MonoBehaviour
         hex.transform.rotation = Quaternion.identity;
 
         hex.SetColor(color);
-        hex.SetCoordinate(x, y);
+        hex.SetHexCoordinate(x, y);
     }
 
     void GenerateRandomHexes()
@@ -144,4 +142,5 @@ public class GridManager : MonoBehaviour
             }
         }
     }
+
 }
