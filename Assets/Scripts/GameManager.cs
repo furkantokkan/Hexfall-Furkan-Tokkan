@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject selectedTile;
 
+    public Color[] colors;
+
     private void Awake()
     {
         if (instance == null)

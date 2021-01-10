@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    public Transform tileMap;
+    public Transform gridParent;
+    public Transform hexParent;
+    public GameObject positionHolder;
     public GameObject hexagon;
 
     public int columnsSize = 8; //left
@@ -13,22 +15,28 @@ public class GridManager : MonoBehaviour
     private GameObject lastYHex;
     private GameObject lastXHex;
 
+    public static GameObject[,] tileArray;
     public static GameObject[,] hexArray;
+
+
     private void Awake()
     {
-        GenerateHexes();
+        GenerateTiles();
+        GenerateRandomHex();
     }
 
-    void GenerateHexes()
+    void GenerateTiles()
     {
-        hexArray = new GameObject[rowsSize, rowsSize * columnsSize - 1];
+        tileArray = new GameObject[rowsSize, rowsSize * (columnsSize - 1)];
+        hexArray = new GameObject[rowsSize, rowsSize * (columnsSize - 1)];
 
         for (int y = 0; y < rowsSize; y++)
         {
-            GameObject newYHex = Instantiate(hexagon.gameObject, tileMap.transform.position, Quaternion.identity);
-            newYHex.transform.SetParent(tileMap.transform);
-            hexArray[0, y] = newYHex;
-            newYHex.GetComponent<Hexagon>().row = y;
+            GameObject newYHex = Instantiate(positionHolder.gameObject, gridParent.transform.position, Quaternion.identity);
+            newYHex.transform.SetParent(gridParent.transform);
+            tileArray[0, y] = newYHex;
+            newYHex.GetComponent<Tile>().tileRow = y;
+            newYHex.name = 0 + " , " + y;
 
             if (y == 0)
             {
@@ -42,13 +50,14 @@ public class GridManager : MonoBehaviour
 
             for (int x = 0; x < columnsSize - 1; x++)
             {
-                GameObject newXHex = Instantiate(hexagon.gameObject, tileMap.transform.position, Quaternion.identity);
-                newXHex.transform.SetParent(tileMap);
+                GameObject newXHex = Instantiate(positionHolder.gameObject, gridParent.transform.position, Quaternion.identity);
+                newXHex.transform.SetParent(gridParent);
 
-                hexArray[x + 1, y] = newXHex; 
-   
-                newXHex.GetComponent<Hexagon>().column = x + 1;
-                newXHex.GetComponent<Hexagon>().row = y;
+                tileArray[x + 1, y] = newXHex;
+                newXHex.name = (x + 1) + " , " + y;
+
+                newXHex.GetComponent<Tile>().tileColumn = x + 1;
+                newXHex.GetComponent<Tile>().tileRow = y;
 
                 if (x == 0)
                 {
@@ -71,6 +80,56 @@ public class GridManager : MonoBehaviour
                 }
 
                 lastXHex = newXHex;
+            }
+        }
+    }
+
+    private Color GetRandomColor()
+    {
+        int index = Random.Range(0, GameManager.instance.colors.Length);
+
+        //added to avoid possible error
+        if (GameManager.instance.colors[index] == null)
+        {
+            Debug.Log(index + " " + "out of array");
+            return GameManager.instance.colors[0];
+        }
+
+        return GameManager.instance.colors[index];
+    }
+
+    void PlaceHexToTile(Hexagon hex, Color color, int x, int y)
+    {
+        hex.transform.SetParent(hexParent);
+
+        hex.transform.position = new Vector3(tileArray[x,y].transform.position.x,
+            tileArray[x, y].transform.position.y, 0);
+
+        hex.transform.rotation = Quaternion.identity;
+
+        hex.SetColor(color);
+        hex.SetPosition(x, y);
+    }
+
+    void GenerateRandomHex()
+    {
+        for (int y = 0; y < rowsSize; y++)
+        {
+            GameObject randomHexRow = Instantiate(hexagon, gridParent.transform.position, Quaternion.identity);
+
+            if (randomHexRow != null)
+            {
+                PlaceHexToTile(randomHexRow.GetComponent<Hexagon>(), GetRandomColor(), 0, y);
+            }
+
+            for (int x = 0; x < columnsSize - 1; x++)
+            {
+                GameObject randomHexColumn = Instantiate(hexagon, gridParent.transform.position, Quaternion.identity);
+
+                if (randomHexColumn != null)
+                {
+                    PlaceHexToTile(randomHexColumn.GetComponent<Hexagon>(),GetRandomColor(),x + 1, y);
+                }
             }
         }
     }
