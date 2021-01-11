@@ -38,12 +38,20 @@ public class Hexagon : MonoBehaviour
     {
         if (canMove)
         {
-            StartCoroutine(MoveRoutine(new Vector3(GridManager.tileArray[x, y].transform.position.x,
+            try
+            {
+                StartCoroutine(MoveRoutine(new Vector3(GridManager.tileArray[x, y].transform.position.x,
                   GridManager.tileArray[x, y].transform.position.y,
-                  0),
-                  x,
-                  y,
+                   0),
+                   x,
+                   y,
                   time));
+            }
+            catch
+            {
+                Debug.Log("Stoped");
+            }
+
         }
     }
     public void OnDestroy()
@@ -62,9 +70,16 @@ public class Hexagon : MonoBehaviour
         canMove = false;
         InputManager.getInput = false;
 
+        if (GameManager.instance.selectedHexesList.Count > 0 && GameManager.instance.selectedHexesList != null)
+        {
+            GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().onDeselected?.Invoke();
+            GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().onDeselected?.Invoke();
+            GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().onDeselected?.Invoke();
+        }
+
         while (!reached)
         {
-
+ 
             //movement finished 
             if (Vector3.Distance(transform.position, destination) <= 0.01f)
             {
@@ -79,7 +94,7 @@ public class Hexagon : MonoBehaviour
             float lerpTime = Mathf.Clamp(elapsedTime / time, 0f, 1f);
 
             lerpTime = Mathf.Sin(lerpTime * Mathf.PI * 0.5f);
-             
+
             transform.position = Vector3.Lerp(startPosition, destination, lerpTime);
 
             yield return null;
