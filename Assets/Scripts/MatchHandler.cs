@@ -24,7 +24,6 @@ public class MatchHandler : MonoBehaviour
         {
             for (int i = 0; i < allMatchesList.Count; i++)
             {
-                allMatchesList[i].GetComponent<SpriteRenderer>().color = Color.red;
                 if (i == allMatchesList.Count - 1)
                 {
                     allMatchesList.Clear();

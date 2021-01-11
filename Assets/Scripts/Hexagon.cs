@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using System;
 
 public class Hexagon : MonoBehaviour
 {
@@ -11,6 +13,9 @@ public class Hexagon : MonoBehaviour
     private SpriteRenderer sr;
 
     private bool canMove = true;
+
+    [SerializeField] internal UnityEvent onSelected;
+    [SerializeField] internal UnityEvent onDeselected;
 
     private void Awake()
     {
