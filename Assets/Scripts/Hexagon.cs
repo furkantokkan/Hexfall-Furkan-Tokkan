@@ -41,6 +41,10 @@ public class Hexagon : MonoBehaviour
                   time));
         }
     }
+    public void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 
     IEnumerator MoveRoutine(Vector3 destination, int x, int y, float time)
     {

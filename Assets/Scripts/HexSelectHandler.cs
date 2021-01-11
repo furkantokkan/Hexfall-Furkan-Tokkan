@@ -15,21 +15,37 @@ public class HexSelectHandler : MonoBehaviour
 
     private GameObject lastHex;
 
+    public static HexSelectHandler instance;
+
+    public List<GameObject> neighboursList = new List<GameObject>();
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Update()
     {
-        FindNeighbours();
         MakeGroupOfHexes();
     }
 
-    void FindNeighbours()
+   public void FindNeighbours(Hexagon hexToCheck)
     {
         if (GameManager.instance.selectedHex != null)
         {
-            int startingHexX = GameManager.instance.selectedHex.GetComponent<Hexagon>().column; //x
-            int startingHexY = GameManager.instance.selectedHex.GetComponent<Hexagon>().row; //y
+            int startingHexX = hexToCheck.column; //x
+            int startingHexY = hexToCheck.row; //y
 
-
+            neighboursList.Clear();
             ClearHexes();
+
             try
             {
                 upHex = GridManager.hexArray[startingHexX, startingHexY + 1];
@@ -123,11 +139,11 @@ public class HexSelectHandler : MonoBehaviour
                 Debug.Log("BotMissing");
             }
 
-
+            AddToList();
 
         }
     }
-    void ClearHexes()
+   public void ClearHexes()
     {
         upHex = null;
         upLeftHex = null;
@@ -136,12 +152,21 @@ public class HexSelectHandler : MonoBehaviour
         botRightHex = null;
         botHex = null;
     }
+    void AddToList()
+    {
+        neighboursList.Add(upHex);
+        neighboursList.Add(upLeftHex);
+        neighboursList.Add(upRightHex);
+        neighboursList.Add(botLeftHex);
+        neighboursList.Add(botRightHex);
+        neighboursList.Add(botHex);
+    }
 
     void MakeGroupOfHexes()
     {
         if (GameManager.instance.selectedHex != null)
         {
-            GameManager.instance.selectedHex.GetComponent<Hexagon>().SetColor(Color.red);
+
             if (lastHex != GameManager.instance.selectedHex && lastHex != null)
             {
                 selectIndex = 1;
@@ -162,10 +187,6 @@ public class HexSelectHandler : MonoBehaviour
                         GameManager.instance.selectedHexesList.Add(GameManager.instance.selectedHex);
                         GameManager.instance.selectedHexesList.Add(upLeftHex);
                         GameManager.instance.selectedHexesList.Add(upHex);
-
-                        GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().SetColor(Color.white);
-                        GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().SetColor(Color.white);
-                        GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().SetColor(Color.white);
                     }
                     break;
                 case 2:
@@ -179,10 +200,6 @@ public class HexSelectHandler : MonoBehaviour
                         GameManager.instance.selectedHexesList.Add(GameManager.instance.selectedHex);
                         GameManager.instance.selectedHexesList.Add(upHex);
                         GameManager.instance.selectedHexesList.Add(upRightHex);
-
-                        GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().SetColor(Color.white);
-                        GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().SetColor(Color.white);
-                        GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().SetColor(Color.white);
                     }
                     break;
                 case 3:
@@ -196,10 +213,6 @@ public class HexSelectHandler : MonoBehaviour
                         GameManager.instance.selectedHexesList.Add(GameManager.instance.selectedHex);
                         GameManager.instance.selectedHexesList.Add(upRightHex);
                         GameManager.instance.selectedHexesList.Add(botRightHex);
-
-                        GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().SetColor(Color.white);
-                        GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().SetColor(Color.white);
-                        GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().SetColor(Color.white);
                     }
                     break;
                 case 4:
@@ -214,9 +227,6 @@ public class HexSelectHandler : MonoBehaviour
                         GameManager.instance.selectedHexesList.Add(botRightHex);
                         GameManager.instance.selectedHexesList.Add(botHex);
 
-                        GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().SetColor(Color.white);
-                        GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().SetColor(Color.white);
-                        GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().SetColor(Color.white);
                     }
                     break;
                 case 5:
@@ -231,9 +241,6 @@ public class HexSelectHandler : MonoBehaviour
                         GameManager.instance.selectedHexesList.Add(botHex);
                         GameManager.instance.selectedHexesList.Add(botLeftHex);
 
-                        GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().SetColor(Color.white);
-                        GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().SetColor(Color.white);
-                        GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().SetColor(Color.white);
                     }
                     break;
                 default:

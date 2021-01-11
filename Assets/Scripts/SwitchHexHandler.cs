@@ -5,18 +5,25 @@ using UnityEngine;
 public class SwitchHexHandler : MonoBehaviour
 {
     public float hexSwitchSpeed = 1f;
-    private Hexagon firstHex;
-    private Hexagon secondHex;
-    private Hexagon thirdHex;
+    public float checkDelay = 0.10f;
+    internal Hexagon firstHex;
+    internal Hexagon secondHex;
+    internal Hexagon thirdHex;
+
+    private MatchHandler matchHandler;
+    private void Awake()
+    {
+        matchHandler = GetComponent<MatchHandler>();
+    }
     public void MoveRight()
     {
-        if (GameManager.instance.selectedHexesList != null)
+        if (GameManager.instance.selectedHexesList != null && GameManager.instance.selectedHex != null)
         {
             firstHex = GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>();
             secondHex = GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>();
             thirdHex = GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>();
+            StartCoroutine(TurnRoutine());
         }
-        StartCoroutine(TurnRoutine());
 
     }
     IEnumerator TurnRoutine()
@@ -27,7 +34,19 @@ public class SwitchHexHandler : MonoBehaviour
             secondHex.Move(thirdHex.column, thirdHex.row, hexSwitchSpeed);
             thirdHex.Move(firstHex.column, firstHex.row, hexSwitchSpeed);
             yield return new WaitForSeconds(hexSwitchSpeed);
+            matchHandler.CheckMatch(firstHex);
+            matchHandler.CheckMatch(secondHex);
+            matchHandler.CheckMatch(thirdHex);
+            yield return new WaitForSeconds(checkDelay);
+            if (i >= 2)
+            {
+                matchHandler.allMatchesList.Clear();
+                HexSelectHandler.instance.ClearHexes();
+                HexSelectHandler.instance.neighboursList.Clear();
+                HexSelectHandler.instance.FindNeighbours(GameManager.instance.selectedHex.GetComponent<Hexagon>());
+            }
         }
 
     }
+
 }
