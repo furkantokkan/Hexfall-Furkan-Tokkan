@@ -51,6 +51,7 @@ public class Hexagon : MonoBehaviour
         float elapsedTime = 0f;
 
         canMove = false;
+        InputManager.getInput = false;
 
         while (!reached)
         {
@@ -76,6 +77,7 @@ public class Hexagon : MonoBehaviour
         }
 
         canMove = true;
+        InputManager.getInput = true;
     }
 
     private void OnMouseDown()
@@ -83,6 +85,10 @@ public class Hexagon : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             GameManager.instance.selectedHex = this.gameObject;
+            if (InputManager.getInput)
+            {
+                HexSelectHandler.instance.FindNeighbours(this);
+            }
             HexSelectHandler.selectIndex++;
         }
     }
