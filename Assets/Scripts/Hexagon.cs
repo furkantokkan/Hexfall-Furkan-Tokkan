@@ -13,11 +13,20 @@ public class Hexagon : MonoBehaviour
     private SpriteRenderer sr;
 
     private bool canMove = true;
+    internal bool isNearHex = false;
 
     [SerializeField] internal UnityEvent onSelected;
     [SerializeField] internal UnityEvent onDeselected;
 
-    internal List<GameObject> allNeighbours = new List<GameObject>();
+    internal GameObject upHex;
+    internal GameObject upLeftHex;
+    internal GameObject upRightHex;
+    internal GameObject botLeftHex;
+    internal GameObject botRightHex;
+    internal GameObject botHex;
+
+    internal List<GameObject> neighbours = new List<GameObject>();
+    internal List<GameObject> matchedNeighbours = new List<GameObject>();
 
     private void Awake()
     {
@@ -25,7 +34,9 @@ public class Hexagon : MonoBehaviour
     }
     private void Start()
     {
-        allNeighbours.AddRange(HexSelectHandler.instance.FindNeighbours(this));
+        neighbours.AddRange(HexSelectHandler.instance.FindNeighbours(this));
+        CheckMatchedNeighbours();
+        AddHexes();
     }
     public void SetHexCoordinate(int x, int y)
     {
@@ -84,7 +95,7 @@ public class Hexagon : MonoBehaviour
 
         while (!reached)
         {
- 
+
             //movement finished 
             if (Vector3.Distance(transform.position, destination) <= 0.01f)
             {
@@ -106,12 +117,33 @@ public class Hexagon : MonoBehaviour
         }
 
         canMove = true;
+        neighbours.Clear();
+        neighbours.AddRange(HexSelectHandler.instance.FindNeighbours(this));
         InputManager.getInput = true;
+    }
+
+    void CheckMatchedNeighbours()
+    {
+        if (!matchedNeighbours.Contains(gameObject))
+        {
+            matchedNeighbours.Add(gameObject);
+        }
+        /*
+                if (hexagonColor == upLeftHex.GetComponent<Hexagon>().hexagonColor || hexagonColor == upHex.GetComponent<Hexagon>().hexagonColor)
+                {
+                    if (!matchedNeighbours.Contains(upLeftHex) || !matchedNeighbours.Contains(upHex))
+                    {
+                        matchedNeighbours.Add(upLeftHex);
+                        matchedNeighbours.Add(upHex);
+                    }
+                }
+        */
+        //check axis
     }
 
     private void OnMouseDown()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && InputManager.getInput)
         {
             GameManager.instance.selectedHex = this.gameObject;
             if (InputManager.getInput)
@@ -120,6 +152,46 @@ public class Hexagon : MonoBehaviour
                 HexSelectHandler.selectIndex++;
                 HexSelectHandler.instance.MakeGroupOfHexes();
             }
+        }
+    }
+
+    void AddHexes()
+    {
+        for (int i = 0; i < neighbours.Count; i++)
+        {
+
+            try
+            {
+                switch (i)
+                {
+                    case 0:
+                        upLeftHex = neighbours[0].gameObject;
+                        break;
+                    case 1:
+                        upHex = neighbours[1].gameObject;
+                        break;
+                    case 2:
+                        upRightHex = neighbours[2].gameObject;
+                        break;
+                    case 3:
+                        botRightHex = neighbours[3].gameObject;
+                        break;
+                    case 4:
+                        botHex = neighbours[4].gameObject;
+                        break;
+                    case 5:
+                        botLeftHex = neighbours[5].gameObject;
+                        break;
+                    default:
+                        Debug.Log("Hex not found");
+                        break;
+                }
+            }
+            catch 
+            {
+                Debug.Log("Hex not found");
+            }
+ 
         }
     }
 }

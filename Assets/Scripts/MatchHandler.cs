@@ -9,10 +9,6 @@ public class MatchHandler : MonoBehaviour
 
     public List<GameObject> allMatchesList = new List<GameObject>();
 
-    internal List<GameObject> firstHexMatch = new List<GameObject>();
-    internal List<GameObject> secondHexMatch = new List<GameObject>();
-    internal List<GameObject> thirdHexMatch = new List<GameObject>();
-
     private void Awake()
     {
         switchHexHandler = GetComponent<SwitchHexHandler>();
@@ -36,7 +32,10 @@ public class MatchHandler : MonoBehaviour
 
     public void CheckMatch(Hexagon hex)
     {
-        
+        for (int i = 0; i < hex.GetComponent<Hexagon>().neighbours.Count; i++)
+        {
+            
+        }
     }
 
 }

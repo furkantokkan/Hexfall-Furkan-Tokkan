@@ -5,6 +5,7 @@ using UnityEngine;
 public class SwitchHexHandler : MonoBehaviour
 {
     public float hexSwitchSpeed = 1f;
+    public float checkDelay = 0.10f;
     internal Hexagon firstHex;
     internal Hexagon secondHex;
     internal Hexagon thirdHex;
@@ -36,15 +37,12 @@ public class SwitchHexHandler : MonoBehaviour
             matchHandler.CheckMatch(firstHex);
             matchHandler.CheckMatch(secondHex);
             matchHandler.CheckMatch(thirdHex);
-            if (i >= 2)
-            {
-                matchHandler.allMatchesList.Clear();
-                HexSelectHandler.instance.ClearHexes();
-                HexSelectHandler.instance.neighboursList.Clear();
-                HexSelectHandler.instance.FindNeighbours(GameManager.instance.selectedHex.GetComponent<Hexagon>());
-            }
-
+            yield return null;
         }
+        matchHandler.allMatchesList.Clear();
+        HexSelectHandler.instance.ClearHexes();
+        HexSelectHandler.instance.neighboursList.Clear();
+        HexSelectHandler.instance.FindNeighbours(GameManager.instance.selectedHex.GetComponent<Hexagon>());
     }
 
 }

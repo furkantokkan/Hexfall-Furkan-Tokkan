@@ -123,6 +123,7 @@ public class GridManager : MonoBehaviour
         for (int y = 0; y < rowsSize; y++)
         {
             GameObject randomHexRow = Instantiate(hexagon, gridParent.transform.position, Quaternion.identity);
+            randomHexRow.GetComponent<Hexagon>().isNearHex = true;
             randomHexRow.name = 0 + " , " + y;
 
             if (randomHexRow != null)

@@ -11,13 +11,15 @@ public class HexSelectHandler : MonoBehaviour
     internal GameObject botRightHex;
     internal GameObject botHex;
 
-    public static int selectIndex = -1;
+    public static int selectIndex = 0;
 
     private GameObject lastHex;
 
     public static HexSelectHandler instance;
 
     public List<GameObject> neighboursList = new List<GameObject>();
+
+    private bool selected = true;
 
     private void Awake()
     {
@@ -34,117 +36,127 @@ public class HexSelectHandler : MonoBehaviour
     private void Update()
     {
         print(selectIndex);
+        if (!selected || selectIndex >= 6)
+        {
+            Math.Min(selectIndex++, 5);
+            MakeGroupOfHexes();
+        }
     }
 
     public List<GameObject> FindNeighbours(Hexagon hexToCheck)
     {
-     
-            int startingHexX = hexToCheck.column; //x
-            int startingHexY = hexToCheck.row; //y
 
-            neighboursList.Clear();
-            ClearHexes();
+        int startingHexX = hexToCheck.column; //x
+        int startingHexY = hexToCheck.row; //y
 
+        bool nearHex = hexToCheck.isNearHex;
+
+        neighboursList.Clear();
+        ClearHexes();
+
+        try
+        {
+            upHex = GridManager.hexArray[startingHexX, startingHexY + 1];
+        }
+        catch
+        {
+            Debug.Log("UpMissing");
+        }
+
+        if (startingHexX % 2 == 0)
+        {
+            #region double
             try
             {
-                upHex = GridManager.hexArray[startingHexX, startingHexY + 1];
+                upRightHex = GridManager.hexArray[startingHexX + 1, startingHexY];
             }
             catch
             {
-                Debug.Log("UpMissing");
+                Debug.Log("UpRightMissing");
             }
-
-            if (startingHexX % 2 == 0)
-            {
-                #region double
-                try
-                {
-                    upRightHex = GridManager.hexArray[startingHexX + 1, startingHexY];
-                }
-                catch
-                {
-                    Debug.Log("UpRightMissing");
-                }
-                try
-                {
-                    upLeftHex = GridManager.hexArray[startingHexX - 1, startingHexY];
-                }
-                catch
-                {
-                    Debug.Log("UpLeftMissing");
-                }
-                try
-                {
-                    botRightHex = GridManager.hexArray[startingHexX + 1, startingHexY - 1];
-                }
-                catch
-                {
-                    Debug.Log("BotRightMissing");
-                }
-                try
-                {
-                    botLeftHex = GridManager.hexArray[startingHexX - 1, startingHexY - 1];
-                }
-                catch
-                {
-                    Debug.Log("BotLeftMissing");
-                }
-                #endregion
-            }
-            else
-            {
-                #region one
-                try
-                {
-                    upRightHex = GridManager.hexArray[startingHexX + 1, startingHexY + 1];
-                }
-                catch
-                {
-                    Debug.Log("UpRightMissing");
-                }
-                try
-                {
-                    upLeftHex = GridManager.hexArray[startingHexX - 1, startingHexY + 1];
-                }
-                catch
-                {
-                    Debug.Log("UpLeftMissing");
-                }
-                try
-                {
-                    botRightHex = GridManager.hexArray[startingHexX + 1, startingHexY];
-                }
-                catch
-                {
-                    Debug.Log("BotRightMissing");
-                }
-                try
-                {
-                    botLeftHex = GridManager.hexArray[startingHexX - 1, startingHexY];
-                }
-                catch
-                {
-                    Debug.Log("BotLeftMissing");
-                }
-                #endregion
-            }
-
             try
             {
-                botHex = GridManager.hexArray[startingHexX, startingHexY - 1];
+                upLeftHex = GridManager.hexArray[startingHexX - 1, startingHexY];
             }
             catch
             {
-                Debug.Log("BotMissing");
+                Debug.Log("UpLeftMissing");
             }
+            try
+            {
+                botRightHex = GridManager.hexArray[startingHexX + 1, startingHexY - 1];
+            }
+            catch
+            {
+                Debug.Log("BotRightMissing");
+            }
+            try
+            {
+                botLeftHex = GridManager.hexArray[startingHexX - 1, startingHexY - 1];
+            }
+            catch
+            {
+                Debug.Log("BotLeftMissing");
+            }
+            #endregion
+        }
+        else
+        {
+            #region one
+            try
+            {
+                upRightHex = GridManager.hexArray[startingHexX + 1, startingHexY + 1];
+            }
+            catch
+            {
+                Debug.Log("UpRightMissing");
+            }
+            try
+            {
 
-            AddToList();
+                upLeftHex = GridManager.hexArray[startingHexX - 1, startingHexY + 1];
+            }
+            catch
+            {
+                Debug.Log("UpLeftMissing");
+            }
+            try
+            {
+                botRightHex = GridManager.hexArray[startingHexX + 1, startingHexY];
+            }
+            catch
+            {
+                Debug.Log("BotRightMissing");
+            }
+            try
+            {
 
-            return neighboursList;
+                botLeftHex = GridManager.hexArray[startingHexX - 1, startingHexY];
+
+            }
+            catch
+            {
+                Debug.Log("BotLeftMissing");
+            }
+            #endregion
+        }
+
+        try
+        {
+            botHex = GridManager.hexArray[startingHexX, startingHexY - 1];
+        }
+        catch
+        {
+            Debug.Log("BotMissing");
+        }
+
+        AddToList();
+
+        return neighboursList;
 
     }
-  
-   public void ClearHexes()
+
+    public void ClearHexes()
     {
         upHex = null;
         upLeftHex = null;
@@ -155,57 +167,55 @@ public class HexSelectHandler : MonoBehaviour
     }
     void AddToList()
     {
-        neighboursList.Add(upHex);
         neighboursList.Add(upLeftHex);
+        neighboursList.Add(upHex);
         neighboursList.Add(upRightHex);
-        neighboursList.Add(botLeftHex);
         neighboursList.Add(botRightHex);
         neighboursList.Add(botHex);
+        neighboursList.Add(botLeftHex);
     }
 
-   public void MakeGroupOfHexes()
+    public void MakeGroupOfHexes()
     {
         if (GameManager.instance.selectedHex != null)
         {
-
-
             if (lastHex != GameManager.instance.selectedHex && lastHex != null)
             {
-                selectIndex = -1;
+                selectIndex = 1;
             }
-
             lastHex = GameManager.instance.selectedHex;
 
             if (InputManager.getInput)
             {
 
+
                 switch (selectIndex)
                 {
-                    case 0:
-
+                    case 1:
                         DeSelectHex();
 
                         if (upLeftHex == null || upHex == null)
                         {
                             selectIndex++;
+                            selected = false;
                         }
                         else
                         {
-
                             GameManager.instance.selectedHexesList.Clear();
                             GameManager.instance.selectedHexesList.Add(GameManager.instance.selectedHex);
                             GameManager.instance.selectedHexesList.Add(upLeftHex);
                             GameManager.instance.selectedHexesList.Add(upHex);
+                            selected = true;
                         }
                         break;
-                    case 1:
+                    case 2:
 
                         DeSelectHex();
-
 
                         if (upHex == null || upRightHex == null)
                         {
                             selectIndex++;
+                            selected = false;
                         }
                         else
                         {
@@ -214,15 +224,17 @@ public class HexSelectHandler : MonoBehaviour
                             GameManager.instance.selectedHexesList.Add(GameManager.instance.selectedHex);
                             GameManager.instance.selectedHexesList.Add(upHex);
                             GameManager.instance.selectedHexesList.Add(upRightHex);
+                            selected = true;
                         }
                         break;
-                    case 2:
+                    case 3:
 
                         DeSelectHex();
 
                         if (upRightHex == null || botRightHex == null)
                         {
                             selectIndex++;
+                            selected = false;
                         }
                         else
                         {
@@ -231,16 +243,17 @@ public class HexSelectHandler : MonoBehaviour
                             GameManager.instance.selectedHexesList.Add(GameManager.instance.selectedHex);
                             GameManager.instance.selectedHexesList.Add(upRightHex);
                             GameManager.instance.selectedHexesList.Add(botRightHex);
-
+                            selected = true;
                         }
                         break;
-                    case 3:
+                    case 4:
 
                         DeSelectHex();
 
                         if (botHex == null || botRightHex == null)
                         {
                             selectIndex++;
+                            selected = false;
                         }
                         else
                         {
@@ -249,16 +262,18 @@ public class HexSelectHandler : MonoBehaviour
                             GameManager.instance.selectedHexesList.Add(GameManager.instance.selectedHex);
                             GameManager.instance.selectedHexesList.Add(botRightHex);
                             GameManager.instance.selectedHexesList.Add(botHex);
-
+                            selected = true;
                         }
                         break;
-                    case 4:
+                    case 5:
 
                         DeSelectHex();
 
                         if (botLeftHex == null || botHex == null)
                         {
                             selectIndex++;
+                            selected = false;
+
                         }
                         else
                         {
@@ -267,21 +282,44 @@ public class HexSelectHandler : MonoBehaviour
                             GameManager.instance.selectedHexesList.Add(GameManager.instance.selectedHex);
                             GameManager.instance.selectedHexesList.Add(botHex);
                             GameManager.instance.selectedHexesList.Add(botLeftHex);
+                            selected = true;
+                        }
+                        break;
+                    case 6:
+
+                        DeSelectHex();
+
+                        if (botLeftHex == null || upLeftHex == null)
+                        {
+                            selectIndex++;
+                            selected = false;
 
                         }
-                        selectIndex = -1;
+                        else
+                        {
+
+                            GameManager.instance.selectedHexesList.Clear();
+                            GameManager.instance.selectedHexesList.Add(GameManager.instance.selectedHex);
+                            GameManager.instance.selectedHexesList.Add(botLeftHex);
+                            GameManager.instance.selectedHexesList.Add(upLeftHex);
+                            selected = true;
+                        }
                         break;
                     default:
-                        selectIndex = -1;
-                        break;
+                        if (selectIndex > 6)
+                        {
+                            selectIndex = 0;
+                        }
+                            break;
                 }
 
- 
+
             }
+
 
         }
     }
-    
+
     void DeSelectHex()
     {
         if (GameManager.instance.selectedHexesList != null && GameManager.instance.selectedHexesList.Count > 0)
