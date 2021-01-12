@@ -35,7 +35,6 @@ public class HexSelectHandler : MonoBehaviour
 
     private void Update()
     {
-        print(selectIndex);
         if (!selected || selectIndex >= 6)
         {
             Math.Min(selectIndex++, 5);
@@ -43,16 +42,16 @@ public class HexSelectHandler : MonoBehaviour
         }
     }
 
-    public List<GameObject> FindNeighbours(Hexagon hexToCheck)
+    public List<GameObject> FindNeighbours(int x, int y)
     {
+        print(x + " " + y);
+        int startingHexX = x; //x
+        int startingHexY = y; //y
 
-        int startingHexX = hexToCheck.column; //x
-        int startingHexY = hexToCheck.row; //y
-
-        bool nearHex = hexToCheck.isNearHex;
 
         neighboursList.Clear();
         ClearHexes();
+        
 
         try
         {
@@ -68,19 +67,19 @@ public class HexSelectHandler : MonoBehaviour
             #region double
             try
             {
-                upRightHex = GridManager.hexArray[startingHexX + 1, startingHexY];
-            }
-            catch
-            {
-                Debug.Log("UpRightMissing");
-            }
-            try
-            {
                 upLeftHex = GridManager.hexArray[startingHexX - 1, startingHexY];
             }
             catch
             {
                 Debug.Log("UpLeftMissing");
+            }
+            try
+            {
+                upRightHex = GridManager.hexArray[startingHexX + 1, startingHexY];
+            }
+            catch
+            {
+                Debug.Log("UpRightMissing");
             }
             try
             {
@@ -105,20 +104,20 @@ public class HexSelectHandler : MonoBehaviour
             #region one
             try
             {
-                upRightHex = GridManager.hexArray[startingHexX + 1, startingHexY + 1];
-            }
-            catch
-            {
-                Debug.Log("UpRightMissing");
-            }
-            try
-            {
 
                 upLeftHex = GridManager.hexArray[startingHexX - 1, startingHexY + 1];
             }
             catch
             {
                 Debug.Log("UpLeftMissing");
+            }
+            try
+            {
+                upRightHex = GridManager.hexArray[startingHexX + 1, startingHexY + 1];
+            }
+            catch
+            {
+                Debug.Log("UpRightMissing");
             }
             try
             {
@@ -192,6 +191,7 @@ public class HexSelectHandler : MonoBehaviour
                 switch (selectIndex)
                 {
                     case 1:
+
                         DeSelectHex();
 
                         if (upLeftHex == null || upHex == null)

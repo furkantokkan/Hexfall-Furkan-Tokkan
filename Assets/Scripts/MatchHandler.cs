@@ -22,37 +22,56 @@ public class MatchHandler : MonoBehaviour
     {
         try
         {
-            if (firstHexMatch.Count >= 3)
+            if (firstHexMatch.Count >= 3 && firstHexMatch != null)
             {
                 stopRoutine = true;
-                for (int i = 0; i < firstHexMatch.Count; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     GridManager.hexArray[firstHexMatch[i].GetComponent<Hexagon>().column,
                         firstHexMatch[i].GetComponent<Hexagon>().row] = null;
 
                     Destroy(firstHexMatch[i].gameObject);
+
+                    if (i >= 3)
+                    {
+                        print("first");
+                        ClearMatch();
+                    }
                 }
             }
-            if (secondHexMatch.Count >= 3)
+            if (secondHexMatch.Count >= 3 && secondHexMatch != null)
             {
                 stopRoutine = true;
-                for (int i = 0; i < secondHexMatch.Count; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     GridManager.hexArray[secondHexMatch[i].GetComponent<Hexagon>().column,
                               secondHexMatch[i].GetComponent<Hexagon>().row] = null;
 
                     Destroy(secondHexMatch[i].gameObject);
+
+                    if (i >= 3)
+                    {
+                        print("second");
+                        ClearMatch();
+                    }
                 }
             }
-            if (thirdHexMatch.Count >= 3)
+            if (thirdHexMatch.Count >= 3 && thirdHexMatch != null)
             {
                 stopRoutine = true;
-                for (int i = 0; i < thirdHexMatch.Count; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     GridManager.hexArray[thirdHexMatch[i].GetComponent<Hexagon>().column,
                               thirdHexMatch[i].GetComponent<Hexagon>().row] = null;
 
                     Destroy(thirdHexMatch[i].gameObject);
+
+
+                    if (i >= 3)
+                    {
+                        print("third");
+                        ClearMatch();
+                    }
                 }
             }
         }
@@ -64,11 +83,26 @@ public class MatchHandler : MonoBehaviour
 
     }
 
-    public void CheckMatch()
+    public void AddMatch()
     {
-        firstHexMatch.AddRange(switchHexHandler.firstHex.GetComponent<Hexagon>().matchedNeighbours);
-        secondHexMatch.AddRange(switchHexHandler.secondHex.GetComponent<Hexagon>().matchedNeighbours);
-        thirdHexMatch.AddRange(switchHexHandler.thirdHex.GetComponent<Hexagon>().matchedNeighbours);
+        if (switchHexHandler.firstHex != null)
+        {
+            firstHexMatch.AddRange(switchHexHandler.firstHex.GetComponent<Hexagon>().matchedNeighbours);
+        }
+        if (switchHexHandler.secondHex != null)
+        {
+            secondHexMatch.AddRange(switchHexHandler.secondHex.GetComponent<Hexagon>().matchedNeighbours);
+        }
+        if (switchHexHandler.thirdHex != null)
+        {
+            thirdHexMatch.AddRange(switchHexHandler.thirdHex.GetComponent<Hexagon>().matchedNeighbours);
+        }
+    }
+    public void ClearMatch()
+    {
+        firstHexMatch.Clear();
+        secondHexMatch.Clear();
+        thirdHexMatch.Clear();
     }
 
 }

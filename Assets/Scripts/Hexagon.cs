@@ -28,19 +28,29 @@ public class Hexagon : MonoBehaviour
     internal List<GameObject> neighbours = new List<GameObject>();
     internal List<GameObject> matchedNeighbours = new List<GameObject>();
 
+    private int targetX;
+    private int targetY;
+
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
     }
     private void Start()
     {
-        neighbours.AddRange(HexSelectHandler.instance.FindNeighbours(this));
+        neighbours.AddRange(HexSelectHandler.instance.FindNeighbours(column, row));
         AddHexes();
         CheckMatchedNeighbours();
     }
-
+    private void Update()
+    {
+        if (this.gameObject == GameManager.instance.selectedHex)
+        {
+            print(column + " " + row);
+        }
+    }
     public void SetHexCoordinate(int x, int y)
     {
+        GridManager.hexArray[x, y] = this.gameObject;
         column = x;
         row = y;
     }
@@ -73,9 +83,8 @@ public class Hexagon : MonoBehaviour
     }
     private void OnDisable()
     {
-        StopAllCoroutines();
 
-        if (GameManager.instance.selectedHexesList != null)
+        if (GameManager.instance.selectedHexesList != null && GameManager.instance.selectedHexesList.Count > 0)
         {
             GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().onDeselected?.Invoke();
             GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().onDeselected?.Invoke();
@@ -95,6 +104,9 @@ public class Hexagon : MonoBehaviour
         canMove = false;
         InputManager.getInput = false;
 
+
+
+
         if (GameManager.instance.selectedHexesList.Count > 0 && GameManager.instance.selectedHexesList != null)
         {
             GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().onDeselected?.Invoke();
@@ -104,9 +116,8 @@ public class Hexagon : MonoBehaviour
 
         while (!reached)
         {
-
             //movement finished 
-            if (Vector3.Distance(transform.position, destination) <= 0.01f)
+            if (Vector3.Distance(transform.position, destination) <= 0.05f)
             {
                 reached = true;
                 transform.position = destination;
@@ -124,15 +135,14 @@ public class Hexagon : MonoBehaviour
 
             yield return null;
         }
-
-        canMove = true;
-        InputManager.getInput = true;
-
+        //neighbours.AddRange(HexSelectHandler.instance.FindNeighbours(x, y));
+        ClearHexes();
         neighbours.Clear();
         matchedNeighbours.Clear();
-        ClearHexes();
-
-        neighbours.AddRange(HexSelectHandler.instance.FindNeighbours(this));
+        yield return new WaitForSeconds(0.15f);
+        canMove = true;
+        InputManager.getInput = true;
+        neighbours.AddRange(HexSelectHandler.instance.FindNeighbours(x, y));
         AddHexes();
         CheckMatchedNeighbours();
     }
@@ -262,7 +272,7 @@ public class Hexagon : MonoBehaviour
             GameManager.instance.selectedHex = this.gameObject;
             if (InputManager.getInput)
             {
-                HexSelectHandler.instance.FindNeighbours(this);
+                HexSelectHandler.instance.FindNeighbours(column, row);
                 HexSelectHandler.selectIndex++;
                 HexSelectHandler.instance.MakeGroupOfHexes();
             }
@@ -271,11 +281,11 @@ public class Hexagon : MonoBehaviour
 
     void AddHexes()
     {
-        for (int i = 0; i < neighbours.Count; i++)
+        try
         {
-
-            try
+            for (int i = 0; i < neighbours.Count; i++)
             {
+
                 switch (i)
                 {
                     case 0:
@@ -299,14 +309,16 @@ public class Hexagon : MonoBehaviour
                     default:
                         Debug.Log("Hex not found");
                         break;
+
                 }
             }
-            catch
-            {
-                Debug.Log("Hex not found");
-            }
-
         }
+
+        catch
+        {
+            Debug.Log("Hex not found");
+        }
+
     }
     void ClearHexes()
     {

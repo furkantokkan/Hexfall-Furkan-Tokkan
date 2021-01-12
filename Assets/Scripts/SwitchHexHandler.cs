@@ -30,27 +30,17 @@ public class SwitchHexHandler : MonoBehaviour
     {
         for (int i = 0; i < 3; i++)
         {
+            matchHandler.ClearMatch();
             firstHex.Move(secondHex.column, secondHex.row, hexSwitchSpeed);
             secondHex.Move(thirdHex.column, thirdHex.row, hexSwitchSpeed);
             thirdHex.Move(firstHex.column, firstHex.row, hexSwitchSpeed);
             yield return new WaitForSeconds(hexSwitchSpeed);
-            matchHandler.CheckMatch();
-            yield return new WaitForSeconds(checkDelay);
-            matchHandler.firstHexMatch.Clear();
-            matchHandler.secondHexMatch.Clear();
-            matchHandler.thirdHexMatch.Clear();
+            matchHandler.AddMatch();
             if (matchHandler.stopRoutine)
             {
                 matchHandler.stopRoutine = false;
+                matchHandler.ClearMatch();
                 ResetState();
-                if (GameManager.instance.selectedHexesList != null)
-                {
-                    for (int x = 0; x < 3; x++)
-                    {
-                        GameManager.instance.selectedHexesList[x].GetComponent<Hexagon>().onDeselected?.Invoke();
-                    }
-                    GameManager.instance.selectedHexesList.Clear();
-                }
                 break;
             }
             yield return null;
@@ -62,10 +52,6 @@ public class SwitchHexHandler : MonoBehaviour
     {
         HexSelectHandler.instance.ClearHexes();
         HexSelectHandler.instance.neighboursList.Clear();
-        if (GameManager.instance.selectedHex != null)
-        {
-            HexSelectHandler.instance.FindNeighbours(GameManager.instance.selectedHex.GetComponent<Hexagon>());
-        }
     }
 
 }
