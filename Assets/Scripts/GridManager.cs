@@ -23,6 +23,19 @@ public class GridManager : MonoBehaviour
         GenerateTiles();
         GenerateRandomHexes();
     }
+    private void Update()
+    {
+        for (int y = 0; y < rowsSize; y++)
+        {
+            for (int x = 0; x < columnsSize - 1; x++)
+            {
+                if (hexArray[x,y] == null)
+                {
+                    print(x + " " + y);
+                }
+            }
+        }
+    }
 
     void GenerateTiles()
     {

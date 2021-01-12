@@ -34,17 +34,42 @@ public class SwitchHexHandler : MonoBehaviour
             secondHex.Move(thirdHex.column, thirdHex.row, hexSwitchSpeed);
             thirdHex.Move(firstHex.column, firstHex.row, hexSwitchSpeed);
             yield return new WaitForSeconds(hexSwitchSpeed);
-            matchHandler.CheckMatch(firstHex);
-            matchHandler.CheckMatch(secondHex);
-            matchHandler.CheckMatch(thirdHex);
+            matchHandler.CheckMatch();
+            yield return new WaitForSeconds(checkDelay);
+            matchHandler.firstHexMatch.Clear();
+            matchHandler.secondHexMatch.Clear();
+            matchHandler.thirdHexMatch.Clear();
+            if (matchHandler.stopRoutine)
+            {
+                matchHandler.stopRoutine = false;
+                ResetState();
+                if (GameManager.instance.selectedHexesList != null)
+                {
+                    for (int x = 0; x < 3; x++)
+                    {
+                        GameManager.instance.selectedHexesList[x].GetComponent<Hexagon>().onDeselected?.Invoke();
+                    }
+                    GameManager.instance.selectedHexesList.Clear();
+                }
+                break;
+            }
             yield return null;
         }
-        matchHandler.allMatchesList.Clear();
+        ResetState();
+    }
+
+    void ResetState()
+    {
         HexSelectHandler.instance.ClearHexes();
         HexSelectHandler.instance.neighboursList.Clear();
-        HexSelectHandler.instance.FindNeighbours(GameManager.instance.selectedHex.GetComponent<Hexagon>());
+        if (GameManager.instance.selectedHex != null)
+        {
+            HexSelectHandler.instance.FindNeighbours(GameManager.instance.selectedHex.GetComponent<Hexagon>());
+        }
     }
 
 }
+
+
 
 

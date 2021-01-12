@@ -297,7 +297,6 @@ public class HexSelectHandler : MonoBehaviour
                         }
                         else
                         {
-
                             GameManager.instance.selectedHexesList.Clear();
                             GameManager.instance.selectedHexesList.Add(GameManager.instance.selectedHex);
                             GameManager.instance.selectedHexesList.Add(botLeftHex);
@@ -310,7 +309,7 @@ public class HexSelectHandler : MonoBehaviour
                         {
                             selectIndex = 0;
                         }
-                            break;
+                     break;
                 }
 
 

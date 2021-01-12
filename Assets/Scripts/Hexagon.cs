@@ -35,9 +35,10 @@ public class Hexagon : MonoBehaviour
     private void Start()
     {
         neighbours.AddRange(HexSelectHandler.instance.FindNeighbours(this));
-        CheckMatchedNeighbours();
         AddHexes();
+        CheckMatchedNeighbours();
     }
+
     public void SetHexCoordinate(int x, int y)
     {
         column = x;
@@ -70,11 +71,19 @@ public class Hexagon : MonoBehaviour
 
         }
     }
-    public void OnDestroy()
+    private void OnDisable()
     {
         StopAllCoroutines();
-    }
 
+        if (GameManager.instance.selectedHexesList != null)
+        {
+            GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().onDeselected?.Invoke();
+            GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().onDeselected?.Invoke();
+            GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().onDeselected?.Invoke();
+        }
+
+        GameManager.instance.selectedHexesList.Clear();
+    }
     IEnumerator MoveRoutine(Vector3 destination, int x, int y, float time)
     {
         Vector3 startPosition = transform.position;
@@ -117,27 +126,132 @@ public class Hexagon : MonoBehaviour
         }
 
         canMove = true;
-        neighbours.Clear();
-        neighbours.AddRange(HexSelectHandler.instance.FindNeighbours(this));
         InputManager.getInput = true;
+
+        neighbours.Clear();
+        matchedNeighbours.Clear();
+        ClearHexes();
+
+        neighbours.AddRange(HexSelectHandler.instance.FindNeighbours(this));
+        AddHexes();
+        CheckMatchedNeighbours();
     }
 
     void CheckMatchedNeighbours()
     {
-        if (!matchedNeighbours.Contains(gameObject))
+
+        if (upLeftHex != null && upHex != null)
         {
-            matchedNeighbours.Add(gameObject);
-        }
-        /*
-                if (hexagonColor == upLeftHex.GetComponent<Hexagon>().hexagonColor || hexagonColor == upHex.GetComponent<Hexagon>().hexagonColor)
+            if (hexagonColor == upLeftHex.GetComponent<Hexagon>().hexagonColor && hexagonColor == upHex.GetComponent<Hexagon>().hexagonColor)
+            {
+                if (!matchedNeighbours.Contains(gameObject))
                 {
-                    if (!matchedNeighbours.Contains(upLeftHex) || !matchedNeighbours.Contains(upHex))
+                    matchedNeighbours.Add(gameObject);
+                }
+                if (!matchedNeighbours.Contains(upLeftHex))
+                {
+                    matchedNeighbours.Add(upLeftHex);
+                }
+                if (!matchedNeighbours.Contains(upHex))
+                {
+                    matchedNeighbours.Add(upHex);
+                }
+            }
+        }
+        if (upHex != null && upRightHex != null)
+        {
+            if (hexagonColor == upHex.GetComponent<Hexagon>().hexagonColor && hexagonColor == upRightHex.GetComponent<Hexagon>().hexagonColor)
+            {
+                if (!matchedNeighbours.Contains(gameObject))
+                {
+                    matchedNeighbours.Add(gameObject);
+                }
+                if (!matchedNeighbours.Contains(upHex))
+                {
+                    matchedNeighbours.Add(upHex);
+                }
+                if (!matchedNeighbours.Contains(upRightHex))
+                {
+                    matchedNeighbours.Add(upRightHex);
+                }
+            }
+        }
+        if (upRightHex != null && botRightHex != null)
+        {
+            if (hexagonColor == upRightHex.GetComponent<Hexagon>().hexagonColor && hexagonColor == botRightHex.GetComponent<Hexagon>().hexagonColor)
+            {
+                if (!matchedNeighbours.Contains(gameObject))
+                {
+                    matchedNeighbours.Add(gameObject);
+                }
+                if (!matchedNeighbours.Contains(upRightHex))
+                {
+                    matchedNeighbours.Add(upRightHex);
+                }
+                if (!matchedNeighbours.Contains(botRightHex))
+                {
+                    matchedNeighbours.Add(botRightHex);
+                }
+            }
+        }
+        if (botRightHex != null && botHex != null)
+        {
+            if (hexagonColor == botRightHex.GetComponent<Hexagon>().hexagonColor && hexagonColor == botHex.GetComponent<Hexagon>().hexagonColor)
+            {
+                if (!matchedNeighbours.Contains(gameObject))
+                {
+                    matchedNeighbours.Add(gameObject);
+                }
+                if (!matchedNeighbours.Contains(botRightHex))
+                {
+                    matchedNeighbours.Add(botRightHex);
+                }
+                if (!matchedNeighbours.Contains(botHex))
+                {
+                    matchedNeighbours.Add(botHex);
+                }
+            }
+        }
+        if (botHex != null && botLeftHex != null)
+        {
+            if (hexagonColor == botHex.GetComponent<Hexagon>().hexagonColor && hexagonColor == botLeftHex.GetComponent<Hexagon>().hexagonColor)
+            {
+                if (!matchedNeighbours.Contains(gameObject))
+                {
+                    matchedNeighbours.Add(gameObject);
+                }
+                if (!matchedNeighbours.Contains(botHex))
+                {
+                    matchedNeighbours.Add(botHex);
+                }
+                if (!matchedNeighbours.Contains(botLeftHex))
+                {
+                    matchedNeighbours.Add(botLeftHex);
+                }
+            }
+        }
+        if (botLeftHex != null && upLeftHex != null)
+        {
+            if (hexagonColor == botLeftHex.GetComponent<Hexagon>().hexagonColor && hexagonColor == upLeftHex.GetComponent<Hexagon>().hexagonColor)
+            {
+                if (!matchedNeighbours.Contains(botLeftHex) && !matchedNeighbours.Contains(upLeftHex))
+                {
+                    if (!matchedNeighbours.Contains(gameObject))
+                    {
+                        matchedNeighbours.Add(gameObject);
+                    }
+                    if (!matchedNeighbours.Contains(botLeftHex))
+                    {
+                        matchedNeighbours.Add(botLeftHex);
+                    }
+                    if (!matchedNeighbours.Contains(upLeftHex))
                     {
                         matchedNeighbours.Add(upLeftHex);
-                        matchedNeighbours.Add(upHex);
                     }
                 }
-        */
+            }
+        }
+
         //check axis
     }
 
@@ -187,11 +301,20 @@ public class Hexagon : MonoBehaviour
                         break;
                 }
             }
-            catch 
+            catch
             {
                 Debug.Log("Hex not found");
             }
- 
+
         }
+    }
+    void ClearHexes()
+    {
+        upLeftHex = null;
+        upHex = null;
+        upRightHex = null;
+        botRightHex = null;
+        botHex = null;
+        botLeftHex = null;
     }
 }
