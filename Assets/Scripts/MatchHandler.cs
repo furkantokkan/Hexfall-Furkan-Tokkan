@@ -36,24 +36,7 @@ public class MatchHandler : MonoBehaviour
 
     public void CheckMatch(Hexagon hex)
     {
-        HexSelectHandler.instance.FindNeighbours(hex);
-        if (HexSelectHandler.instance.neighboursList != null)
-        {
-            for (int i = 0; i < HexSelectHandler.instance.neighboursList.Count; i++)
-            {
-                if (HexSelectHandler.instance.neighboursList[i] != null)
-                {
-                    if (HexSelectHandler.instance.neighboursList[i].GetComponent<Hexagon>().hexagonColor == hex.hexagonColor)
-                    {
-                        allMatchesList.Add(HexSelectHandler.instance.neighboursList[i].gameObject);
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-            }
-        }
+        
     }
 
 }

@@ -11,7 +11,7 @@ public class HexSelectHandler : MonoBehaviour
     internal GameObject botRightHex;
     internal GameObject botHex;
 
-    public static int selectIndex = 0;
+    public static int selectIndex = -1;
 
     private GameObject lastHex;
 
@@ -31,15 +31,14 @@ public class HexSelectHandler : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
-        MakeGroupOfHexes();
+        print(selectIndex);
     }
 
-   public void FindNeighbours(Hexagon hexToCheck)
+    public List<GameObject> FindNeighbours(Hexagon hexToCheck)
     {
-        if (GameManager.instance.selectedHex != null)
-        {
+     
             int startingHexX = hexToCheck.column; //x
             int startingHexY = hexToCheck.row; //y
 
@@ -141,8 +140,10 @@ public class HexSelectHandler : MonoBehaviour
 
             AddToList();
 
-        }
+            return neighboursList;
+
     }
+  
    public void ClearHexes()
     {
         upHex = null;
@@ -162,158 +163,134 @@ public class HexSelectHandler : MonoBehaviour
         neighboursList.Add(botHex);
     }
 
-    void MakeGroupOfHexes()
+   public void MakeGroupOfHexes()
     {
         if (GameManager.instance.selectedHex != null)
         {
 
+
             if (lastHex != GameManager.instance.selectedHex && lastHex != null)
             {
-                selectIndex = 1;
+                selectIndex = -1;
             }
 
             lastHex = GameManager.instance.selectedHex;
 
             if (InputManager.getInput)
             {
+
                 switch (selectIndex)
                 {
-                    case 1:
+                    case 0:
+
+                        DeSelectHex();
+
                         if (upLeftHex == null || upHex == null)
                         {
                             selectIndex++;
                         }
                         else
                         {
-                            if (GameManager.instance.selectedHexesList.Count > 0 && GameManager.instance.selectedHexesList != null)
-                            {
-                                GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().onDeselected?.Invoke();
-                                GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().onDeselected?.Invoke();
-                                GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().onDeselected?.Invoke();
-                            }
 
                             GameManager.instance.selectedHexesList.Clear();
                             GameManager.instance.selectedHexesList.Add(GameManager.instance.selectedHex);
                             GameManager.instance.selectedHexesList.Add(upLeftHex);
                             GameManager.instance.selectedHexesList.Add(upHex);
-
-                            GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().onSelected?.Invoke();
-                            GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().onSelected?.Invoke();
-                            GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().onSelected?.Invoke();
                         }
                         break;
-                    case 2:
+                    case 1:
+
+                        DeSelectHex();
+
+
                         if (upHex == null || upRightHex == null)
                         {
                             selectIndex++;
                         }
                         else
                         {
-                            if (GameManager.instance.selectedHexesList.Count > 0 && GameManager.instance.selectedHexesList != null)
-                            {
-                                GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().onDeselected?.Invoke();
-                                GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().onDeselected?.Invoke();
-                                GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().onDeselected?.Invoke();
-                            }
 
                             GameManager.instance.selectedHexesList.Clear();
                             GameManager.instance.selectedHexesList.Add(GameManager.instance.selectedHex);
                             GameManager.instance.selectedHexesList.Add(upHex);
                             GameManager.instance.selectedHexesList.Add(upRightHex);
-
-                            GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().onSelected?.Invoke();
-                            GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().onSelected?.Invoke();
-                            GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().onSelected?.Invoke();
                         }
                         break;
-                    case 3:
+                    case 2:
+
+                        DeSelectHex();
+
                         if (upRightHex == null || botRightHex == null)
                         {
                             selectIndex++;
                         }
                         else
                         {
-                            if (GameManager.instance.selectedHexesList.Count > 0 && GameManager.instance.selectedHexesList != null)
-                            {
-                                GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().onDeselected?.Invoke();
-                                GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().onDeselected?.Invoke();
-                                GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().onDeselected?.Invoke();
-                            }
 
                             GameManager.instance.selectedHexesList.Clear();
                             GameManager.instance.selectedHexesList.Add(GameManager.instance.selectedHex);
                             GameManager.instance.selectedHexesList.Add(upRightHex);
                             GameManager.instance.selectedHexesList.Add(botRightHex);
 
-                            GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().onSelected?.Invoke();
-                            GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().onSelected?.Invoke();
-                            GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().onSelected?.Invoke();
                         }
                         break;
-                    case 4:
+                    case 3:
+
+                        DeSelectHex();
+
                         if (botHex == null || botRightHex == null)
                         {
                             selectIndex++;
                         }
                         else
                         {
-                            if (GameManager.instance.selectedHexesList.Count > 0 && GameManager.instance.selectedHexesList != null)
-                            {
-                                GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().onDeselected?.Invoke();
-                                GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().onDeselected?.Invoke();
-                                GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().onDeselected?.Invoke();
-                            }
 
                             GameManager.instance.selectedHexesList.Clear();
                             GameManager.instance.selectedHexesList.Add(GameManager.instance.selectedHex);
                             GameManager.instance.selectedHexesList.Add(botRightHex);
                             GameManager.instance.selectedHexesList.Add(botHex);
 
-
-                            GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().onSelected?.Invoke();
-                            GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().onSelected?.Invoke();
-                            GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().onSelected?.Invoke();
-
                         }
                         break;
-                    case 5:
+                    case 4:
+
+                        DeSelectHex();
+
                         if (botLeftHex == null || botHex == null)
                         {
                             selectIndex++;
                         }
                         else
                         {
-                            if (GameManager.instance.selectedHexesList.Count > 0 && GameManager.instance.selectedHexesList != null)
-                            {
-                                GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().onDeselected?.Invoke();
-                                GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().onDeselected?.Invoke();
-                                GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().onDeselected?.Invoke();
-                            }
 
                             GameManager.instance.selectedHexesList.Clear();
                             GameManager.instance.selectedHexesList.Add(GameManager.instance.selectedHex);
                             GameManager.instance.selectedHexesList.Add(botHex);
                             GameManager.instance.selectedHexesList.Add(botLeftHex);
 
-
-                            GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().onSelected?.Invoke();
-                            GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().onSelected?.Invoke();
-                            GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().onSelected?.Invoke();
-
                         }
+                        selectIndex = -1;
                         break;
                     default:
-                        if (selectIndex >= 6)
-                        {
-                            selectIndex = 1;
-                        }
+                        selectIndex = -1;
                         break;
                 }
+
+ 
             }
 
         }
     }
-
+    
+    void DeSelectHex()
+    {
+        if (GameManager.instance.selectedHexesList != null && GameManager.instance.selectedHexesList.Count > 0)
+        {
+            GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().onDeselected?.Invoke();
+            GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().onDeselected?.Invoke();
+            GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().onDeselected?.Invoke();
+        }
+    }
 
 
 }

@@ -24,5 +24,19 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-    
+    private void Update()
+    {
+        if (selectedHexesList != null && selectedHexesList.Count > 0)
+        {
+            selectedHexesList[0].GetComponent<Hexagon>().onDeselected?.Invoke();
+            selectedHexesList[1].GetComponent<Hexagon>().onDeselected?.Invoke();
+            selectedHexesList[2].GetComponent<Hexagon>().onDeselected?.Invoke();
+
+            selectedHexesList[0].GetComponent<Hexagon>().onSelected?.Invoke();
+            selectedHexesList[1].GetComponent<Hexagon>().onSelected?.Invoke();
+            selectedHexesList[2].GetComponent<Hexagon>().onSelected?.Invoke();
+
+        }
+    }
+
 }

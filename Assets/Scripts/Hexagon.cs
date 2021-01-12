@@ -17,11 +17,16 @@ public class Hexagon : MonoBehaviour
     [SerializeField] internal UnityEvent onSelected;
     [SerializeField] internal UnityEvent onDeselected;
 
+    internal List<GameObject> allNeighbours = new List<GameObject>();
+
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
     }
-
+    private void Start()
+    {
+        allNeighbours.AddRange(HexSelectHandler.instance.FindNeighbours(this));
+    }
     public void SetHexCoordinate(int x, int y)
     {
         column = x;
@@ -112,8 +117,9 @@ public class Hexagon : MonoBehaviour
             if (InputManager.getInput)
             {
                 HexSelectHandler.instance.FindNeighbours(this);
+                HexSelectHandler.selectIndex++;
+                HexSelectHandler.instance.MakeGroupOfHexes();
             }
-            HexSelectHandler.selectIndex++;
         }
     }
 }
