@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 
     public List<GameObject> selectedHexesList = new List<GameObject>();
 
+    public bool canHexTakeNewPlace = false;
+
 
     private void Awake()
     {
@@ -31,8 +33,8 @@ public class GameManager : MonoBehaviour
             selectedHexesList[0].GetComponent<Hexagon>().onSelected?.Invoke();
             selectedHexesList[1].GetComponent<Hexagon>().onSelected?.Invoke();
             selectedHexesList[2].GetComponent<Hexagon>().onSelected?.Invoke();
-
         }
+
     }
 
 }

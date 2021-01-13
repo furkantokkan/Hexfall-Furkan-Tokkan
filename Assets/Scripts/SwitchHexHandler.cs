@@ -5,7 +5,6 @@ using UnityEngine;
 public class SwitchHexHandler : MonoBehaviour
 {
     public float hexSwitchSpeed = 1f;
-    public float checkDelay = 0.10f;
     internal Hexagon firstHex;
     internal Hexagon secondHex;
     internal Hexagon thirdHex;
@@ -15,6 +14,7 @@ public class SwitchHexHandler : MonoBehaviour
     {
         matchHandler = GetComponent<MatchHandler>();
     }
+
     public void MoveRight()
     {
         if (GameManager.instance.selectedHexesList != null && GameManager.instance.selectedHex != null)
@@ -22,30 +22,51 @@ public class SwitchHexHandler : MonoBehaviour
             firstHex = GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>();
             secondHex = GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>();
             thirdHex = GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>();
+            InputManager.getInput = false;
+            GameManager.instance.canHexTakeNewPlace = false;
+            StopCoroutine(TurnRoutine());
             StartCoroutine(TurnRoutine());
         }
 
     }
+
     IEnumerator TurnRoutine()
     {
         for (int i = 0; i < 3; i++)
         {
             matchHandler.ClearMatch();
-            firstHex.Move(secondHex.column, secondHex.row, hexSwitchSpeed);
-            secondHex.Move(thirdHex.column, thirdHex.row, hexSwitchSpeed);
-            thirdHex.Move(firstHex.column, firstHex.row, hexSwitchSpeed);
+            if (firstHex != null)
+            {
+                firstHex.Move(secondHex.column, secondHex.row, hexSwitchSpeed);
+            }
+            if (secondHex != null)
+            {
+                secondHex.Move(thirdHex.column, thirdHex.row, hexSwitchSpeed);
+            }
+            if (thirdHex != null)
+            {
+                thirdHex.Move(firstHex.column, firstHex.row, hexSwitchSpeed);
+            }
             yield return new WaitForSeconds(hexSwitchSpeed);
             matchHandler.AddMatch();
-            if (matchHandler.stopRoutine)
+            if (MatchHandler.stopRoutine)
             {
-                matchHandler.stopRoutine = false;
+                InputManager.getInput = true;
+                MatchHandler.stopRoutine = false;
                 matchHandler.ClearMatch();
                 ResetState();
-                break;
+                yield return new WaitForSeconds(0.042f);
+                GameManager.instance.canHexTakeNewPlace = true;
+                yield return null;
             }
+            if (i == 2)
+            {
+                GameManager.instance.canHexTakeNewPlace = true;
+                InputManager.getInput = true;
+            }
+            ResetState();
             yield return null;
         }
-        ResetState();
     }
 
     void ResetState()

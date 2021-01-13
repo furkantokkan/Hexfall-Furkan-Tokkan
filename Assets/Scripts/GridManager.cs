@@ -18,25 +18,51 @@ public class GridManager : MonoBehaviour
     public static GameObject[,] tileArray;
     public static GameObject[,] hexArray;
 
+    private SwitchHexHandler switchHexHandler;
+    private MatchHandler matchHandler;
+
     private void Awake()
     {
         GenerateTiles();
         GenerateRandomHexes();
+        switchHexHandler = GameObject.Find("GameManager").GetComponent<SwitchHexHandler>();
+        matchHandler = GameObject.Find("GameManager").GetComponent<MatchHandler>();
     }
-    private void Update()
+    private void LateUpdate()
     {
-        for (int y = 0; y < rowsSize; y++)
+        if (GameManager.instance.canHexTakeNewPlace)
         {
-            for (int x = 0; x < columnsSize - 1; x++)
-            {
-                if (hexArray[x,y] == null)
-                {
-                    print(x + " " + y);
-                }
-            }
+            FindEmptyHexes();
         }
     }
+    public void FindEmptyHexes()
+    {
+        try
+        {
+            for (int y = 0; y < rowsSize; y++)
+            {
+                for (int x = 0; x < columnsSize - 1; x++)
+                {
+                    if (hexArray[x, y] == null)
+                    {
+                        if (hexArray[x, y + 1] != null)
+                        {
+                            hexArray[x, y + 1].GetComponent<Hexagon>().Move(x, y, Random.Range(0.35f,0.4f));
+                            break;
+                        }
+                    }
+                }
+            }
 
+        }
+        catch
+        {
+
+
+        }
+
+
+    }
     void GenerateTiles()
     {
         tileArray = new GameObject[rowsSize, rowsSize * (columnsSize - 1)];
@@ -120,7 +146,7 @@ public class GridManager : MonoBehaviour
     void PlaceHexToTile(Hexagon hex, Color color, int x, int y)
     {
         hex.transform.SetParent(hexParent);
-        hex.transform.position = new Vector3(tileArray[x,y].transform.position.x,
+        hex.transform.position = new Vector3(tileArray[x, y].transform.position.x,
             tileArray[x, y].transform.position.y, 0);
 
         hexArray[x, y] = hex.gameObject;
@@ -136,7 +162,6 @@ public class GridManager : MonoBehaviour
         for (int y = 0; y < rowsSize; y++)
         {
             GameObject randomHexRow = Instantiate(hexagon, gridParent.transform.position, Quaternion.identity);
-            randomHexRow.GetComponent<Hexagon>().isNearHex = true;
             randomHexRow.name = 0 + " , " + y;
 
             if (randomHexRow != null)
@@ -150,7 +175,7 @@ public class GridManager : MonoBehaviour
 
                 if (randomHexColumn != null)
                 {
-                    PlaceHexToTile(randomHexColumn.GetComponent<Hexagon>(),GetRandomColor(),x + 1, y);
+                    PlaceHexToTile(randomHexColumn.GetComponent<Hexagon>(), GetRandomColor(), x + 1, y);
                     randomHexColumn.name = (x + 1) + " , " + y;
                 }
             }

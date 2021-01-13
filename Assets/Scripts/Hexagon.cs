@@ -12,8 +12,8 @@ public class Hexagon : MonoBehaviour
     public Color hexagonColor;
     private SpriteRenderer sr;
 
-    private bool canMove = true;
-    internal bool isNearHex = false;
+    internal bool canMove = true;
+    private bool breakLoop;
 
     [SerializeField] internal UnityEvent onSelected;
     [SerializeField] internal UnityEvent onDeselected;
@@ -28,9 +28,6 @@ public class Hexagon : MonoBehaviour
     internal List<GameObject> neighbours = new List<GameObject>();
     internal List<GameObject> matchedNeighbours = new List<GameObject>();
 
-    private int targetX;
-    private int targetY;
-
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -40,13 +37,6 @@ public class Hexagon : MonoBehaviour
         neighbours.AddRange(HexSelectHandler.instance.FindNeighbours(column, row));
         AddHexes();
         CheckMatchedNeighbours();
-    }
-    private void Update()
-    {
-        if (this.gameObject == GameManager.instance.selectedHex)
-        {
-            print(column + " " + row);
-        }
     }
     public void SetHexCoordinate(int x, int y)
     {
@@ -60,20 +50,19 @@ public class Hexagon : MonoBehaviour
         hexagonColor = color;
         sr.color = hexagonColor;
     }
-
     public void Move(int x, int y, float time)
     {
         if (canMove)
         {
             try
             {
+                GridManager.hexArray[column, row] = null;
                 StartCoroutine(MoveRoutine(new Vector3(GridManager.tileArray[x, y].transform.position.x,
                   GridManager.tileArray[x, y].transform.position.y,
                    0),
                    x,
                    y,
                   time));
-                GridManager.hexArray[column, row] = null;
             }
             catch
             {
@@ -84,7 +73,7 @@ public class Hexagon : MonoBehaviour
     }
     private void OnDisable()
     {
-
+        
         if (GameManager.instance.selectedHexesList != null && GameManager.instance.selectedHexesList.Count > 0)
         {
             GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().onDeselected?.Invoke();
@@ -96,6 +85,7 @@ public class Hexagon : MonoBehaviour
     }
     IEnumerator MoveRoutine(Vector3 destination, int x, int y, float time)
     {
+
         Vector3 startPosition = transform.position;
 
         bool reached = false;
@@ -103,10 +93,6 @@ public class Hexagon : MonoBehaviour
         float elapsedTime = 0f;
 
         canMove = false;
-        InputManager.getInput = false;
-
-
-
 
         if (GameManager.instance.selectedHexesList.Count > 0 && GameManager.instance.selectedHexesList != null)
         {
@@ -114,13 +100,13 @@ public class Hexagon : MonoBehaviour
             GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>().onDeselected?.Invoke();
             GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>().onDeselected?.Invoke();
         }
-
         while (!reached)
         {
             //movement finished 
-            if (Vector3.Distance(transform.position, destination) <= 0.05f)
+            if (Vector3.Distance(transform.position, destination) <= 0.05f || breakLoop)
             {
                 reached = true;
+                breakLoop = false;
                 transform.position = destination;
                 SetHexCoordinate(x, y);
                 break;
@@ -133,16 +119,13 @@ public class Hexagon : MonoBehaviour
             lerpTime = Mathf.Sin(lerpTime * Mathf.PI * 0.5f);
 
             transform.position = Vector3.Lerp(startPosition, destination, lerpTime);
-
             yield return null;
         }
-        //neighbours.AddRange(HexSelectHandler.instance.FindNeighbours(x, y));
         ClearHexes();
         neighbours.Clear();
         matchedNeighbours.Clear();
         yield return new WaitForSeconds(0.15f);
         canMove = true;
-        InputManager.getInput = true;
         neighbours.AddRange(HexSelectHandler.instance.FindNeighbours(x, y));
         AddHexes();
         CheckMatchedNeighbours();

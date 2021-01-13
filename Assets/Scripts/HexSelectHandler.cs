@@ -178,15 +178,15 @@ public class HexSelectHandler : MonoBehaviour
     {
         if (GameManager.instance.selectedHex != null)
         {
-            if (lastHex != GameManager.instance.selectedHex && lastHex != null)
+            if (lastHex != GameManager.instance.selectedHex && lastHex != null && InputManager.getInput)
             {
                 selectIndex = 1;
             }
+
             lastHex = GameManager.instance.selectedHex;
 
             if (InputManager.getInput)
             {
-
 
                 switch (selectIndex)
                 {

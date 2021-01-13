@@ -65,11 +65,6 @@ public class InputManager : MonoBehaviour
                             break;
                     }
                 }
-
-                if (Input.GetMouseButton(1))
-                {
-                    
-                }
             }
         }
         else

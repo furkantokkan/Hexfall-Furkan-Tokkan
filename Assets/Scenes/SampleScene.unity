@@ -547,7 +547,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hexSwitchSpeed: 1
-  checkDelay: 0.1
 --- !u!114 &1018951235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -560,7 +559,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4855a3d00707d4742a311a9bbf19fad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  matches: []
+  firstHexMatch: []
+  secondHexMatch: []
+  thirdHexMatch: []
 --- !u!1 &1434633981
 GameObject:
   m_ObjectHideFlags: 0

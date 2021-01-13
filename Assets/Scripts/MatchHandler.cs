@@ -11,7 +11,8 @@ public class MatchHandler : MonoBehaviour
     public List<GameObject> secondHexMatch = new List<GameObject>();
     public List<GameObject> thirdHexMatch = new List<GameObject>();
 
-    internal bool stopRoutine;
+    public static bool stopRoutine;
+
 
     private void Awake()
     {
@@ -29,7 +30,6 @@ public class MatchHandler : MonoBehaviour
                 {
                     GridManager.hexArray[firstHexMatch[i].GetComponent<Hexagon>().column,
                         firstHexMatch[i].GetComponent<Hexagon>().row] = null;
-
                     Destroy(firstHexMatch[i].gameObject);
                 }
                 ClearMatch();
@@ -43,7 +43,6 @@ public class MatchHandler : MonoBehaviour
                               secondHexMatch[i].GetComponent<Hexagon>().row] = null;
 
                     Destroy(secondHexMatch[i].gameObject);
-
                 }
                 ClearMatch();
             }
@@ -56,7 +55,6 @@ public class MatchHandler : MonoBehaviour
                               thirdHexMatch[i].GetComponent<Hexagon>().row] = null;
 
                     Destroy(thirdHexMatch[i].gameObject);
-
                 }
                 ClearMatch();
             }
