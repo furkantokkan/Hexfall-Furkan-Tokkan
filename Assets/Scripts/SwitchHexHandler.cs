@@ -10,9 +10,12 @@ public class SwitchHexHandler : MonoBehaviour
     internal Hexagon thirdHex;
 
     private MatchHandler matchHandler;
+    private GridManager gridManager;
+
     private void Awake()
     {
         matchHandler = GetComponent<MatchHandler>();
+        gridManager = GameObject.Find("GridManager").GetComponent<GridManager>();
     }
 
     public void MoveRight()
@@ -55,7 +58,7 @@ public class SwitchHexHandler : MonoBehaviour
                 MatchHandler.stopRoutine = false;
                 matchHandler.ClearMatch();
                 ResetState();
-                yield return new WaitForSeconds(0.042f);
+                yield return new WaitForSeconds(0.04f);
                 GameManager.instance.canHexTakeNewPlace = true;
                 yield return null;
             }

@@ -18,28 +18,44 @@ public class GridManager : MonoBehaviour
     public static GameObject[,] tileArray;
     public static GameObject[,] hexArray;
 
-    private SwitchHexHandler switchHexHandler;
-    private MatchHandler matchHandler;
-
     private void Awake()
     {
         GenerateTiles();
-        GenerateRandomHexes();
-        switchHexHandler = GameObject.Find("GameManager").GetComponent<SwitchHexHandler>();
-        matchHandler = GameObject.Find("GameManager").GetComponent<MatchHandler>();
+        CreateFirstHexes();
     }
+
     private void LateUpdate()
     {
         if (GameManager.instance.canHexTakeNewPlace)
         {
             FindEmptyHexes();
         }
+        try
+        {
+            if (GameManager.instance.allHexesList.Count <= GameManager.instance.maxHexagonCount)
+            {
+                for (int x = 0; x < columnsSize - 1; x++)
+                {
+                    if (hexArray[x, rowsSize - 1].gameObject == null)
+                    {
+                        GameObject hexRow = Instantiate(hexagon, gridParent.transform.position, Quaternion.identity);
+
+                        PlaceHexToTile(hexRow.GetComponent<Hexagon>(), GetRandomColor(), x, rowsSize - 1);
+                    }
+                }
+            }
+        }
+        catch 
+        {
+        }
+        
+
     }
     public void FindEmptyHexes()
     {
         try
         {
-            for (int y = 0; y < rowsSize; y++)
+            for (int y = 0; y < rowsSize - 1; y++)
             {
                 for (int x = 0; x < columnsSize - 1; x++)
                 {
@@ -47,22 +63,23 @@ public class GridManager : MonoBehaviour
                     {
                         if (hexArray[x, y + 1] != null)
                         {
-                            hexArray[x, y + 1].GetComponent<Hexagon>().Move(x, y, Random.Range(0.35f,0.4f));
-                            break;
+                            hexArray[x, y + 1].GetComponent<Hexagon>().Move(x, y, Random.Range(0.36f, 0.45f));
                         }
                     }
+                    
                 }
             }
 
         }
         catch
         {
-
-
+            Debug.Log("Out of Array");
         }
 
-
     }
+
+
+
     void GenerateTiles()
     {
         tileArray = new GameObject[rowsSize, rowsSize * (columnsSize - 1)];
@@ -155,9 +172,10 @@ public class GridManager : MonoBehaviour
 
         hex.SetColor(color);
         hex.SetHexCoordinate(x, y);
+
     }
 
-    void GenerateRandomHexes()
+    void CreateFirstHexes()
     {
         for (int y = 0; y < rowsSize; y++)
         {

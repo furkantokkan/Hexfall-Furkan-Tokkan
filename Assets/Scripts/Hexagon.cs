@@ -13,7 +13,7 @@ public class Hexagon : MonoBehaviour
     private SpriteRenderer sr;
 
     internal bool canMove = true;
-    private bool breakLoop;
+    internal bool reached;
 
     [SerializeField] internal UnityEvent onSelected;
     [SerializeField] internal UnityEvent onDeselected;
@@ -71,9 +71,13 @@ public class Hexagon : MonoBehaviour
 
         }
     }
+    private void OnEnable()
+    {
+        GameManager.instance.allHexesList.Add(this.gameObject);
+    }
     private void OnDisable()
     {
-        
+        GameManager.instance.allHexesList.Remove(this.gameObject);
         if (GameManager.instance.selectedHexesList != null && GameManager.instance.selectedHexesList.Count > 0)
         {
             GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().onDeselected?.Invoke();
@@ -88,7 +92,7 @@ public class Hexagon : MonoBehaviour
 
         Vector3 startPosition = transform.position;
 
-        bool reached = false;
+         reached = false;
 
         float elapsedTime = 0f;
 
@@ -103,10 +107,9 @@ public class Hexagon : MonoBehaviour
         while (!reached)
         {
             //movement finished 
-            if (Vector3.Distance(transform.position, destination) <= 0.05f || breakLoop)
+            if (Vector3.Distance(transform.position, destination) <= 0.05f )
             {
                 reached = true;
-                breakLoop = false;
                 transform.position = destination;
                 SetHexCoordinate(x, y);
                 break;
@@ -124,7 +127,7 @@ public class Hexagon : MonoBehaviour
         ClearHexes();
         neighbours.Clear();
         matchedNeighbours.Clear();
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.14f);
         canMove = true;
         neighbours.AddRange(HexSelectHandler.instance.FindNeighbours(x, y));
         AddHexes();

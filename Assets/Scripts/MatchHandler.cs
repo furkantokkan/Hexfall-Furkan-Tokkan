@@ -5,7 +5,7 @@ using System.Linq;
 
 public class MatchHandler : MonoBehaviour
 {
-    SwitchHexHandler switchHexHandler;
+    private SwitchHexHandler switchHexHandler;
 
     public List<GameObject> firstHexMatch = new List<GameObject>();
     public List<GameObject> secondHexMatch = new List<GameObject>();

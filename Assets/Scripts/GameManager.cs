@@ -12,6 +12,10 @@ public class GameManager : MonoBehaviour
 
     public List<GameObject> selectedHexesList = new List<GameObject>();
 
+    public List<GameObject> allHexesList = new List<GameObject>();
+
+    public int maxHexagonCount;
+
     public bool canHexTakeNewPlace = false;
 
 
@@ -25,6 +29,10 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+    }
+    private void Start()
+    {
+        maxHexagonCount = allHexesList.Count;
     }
     private void Update()
     {
