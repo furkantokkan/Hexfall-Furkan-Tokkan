@@ -73,6 +73,7 @@ public class Hexagon : MonoBehaviour
                    x,
                    y,
                   time));
+                GridManager.hexArray[column, row] = null;
             }
             catch
             {

@@ -31,13 +31,8 @@ public class MatchHandler : MonoBehaviour
                         firstHexMatch[i].GetComponent<Hexagon>().row] = null;
 
                     Destroy(firstHexMatch[i].gameObject);
-
-                    if (i >= 3)
-                    {
-                        print("first");
-                        ClearMatch();
-                    }
                 }
+                ClearMatch();
             }
             if (secondHexMatch.Count >= 3 && secondHexMatch != null)
             {
@@ -49,12 +44,8 @@ public class MatchHandler : MonoBehaviour
 
                     Destroy(secondHexMatch[i].gameObject);
 
-                    if (i >= 3)
-                    {
-                        print("second");
-                        ClearMatch();
-                    }
                 }
+                ClearMatch();
             }
             if (thirdHexMatch.Count >= 3 && thirdHexMatch != null)
             {
@@ -66,13 +57,8 @@ public class MatchHandler : MonoBehaviour
 
                     Destroy(thirdHexMatch[i].gameObject);
 
-
-                    if (i >= 3)
-                    {
-                        print("third");
-                        ClearMatch();
-                    }
                 }
+                ClearMatch();
             }
         }
         catch
