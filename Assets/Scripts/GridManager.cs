@@ -81,11 +81,20 @@ public class GridManager : MonoBehaviour
 
             for (int x = 0; x < 8; x++)
             {
-                yield return new WaitForSeconds(0.25f);
+                if (x == 0)
+                {
+                    yield return new WaitForSeconds(0.25f);
+                }
+                else
+                {
+                    yield return new WaitForSeconds(0.05f);
+                }
                 if (hexArray[x, 8] == null)
                 {
                     print("empty: " + x);
                     GameObject hexRow = Instantiate(hexagon, gridParent.transform.position, Quaternion.identity);
+
+                    PlaceHexToTile(hexRow.GetComponent<Hexagon>(), GetRandomColor(), x, 8);
                 }
             }
             yield return null;
