@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using System;
+using UnityEngine.UI;
 
 public class Hexagon : MonoBehaviour
 {
     public int column; //left right
     public int row; //up down
 
+    public int scoreAmount = 5;
+
     public Color hexagonColor;
     private SpriteRenderer sr;
 
     internal bool canMove = true;
     internal bool reached;
+    internal bool bomb;
 
     [SerializeField] internal UnityEvent onSelected;
     [SerializeField] internal UnityEvent onDeselected;
@@ -29,10 +33,27 @@ public class Hexagon : MonoBehaviour
     internal List<GameObject> matchedNeighbours = new List<GameObject>();
 
     private GridManager gridManager;
+    public SpriteRenderer bombSprite;
+
+    public Text bombCountDownText;
+
+    public static Action<int> score;
+
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
         GameManager.instance.allHexesList.Add(this.gameObject);
+
+        if (bomb)
+        {
+            bombSprite.enabled = true;
+            bombCountDownText.enabled = true;
+        }
+        else
+        {
+            bombSprite.enabled = false;
+            bombCountDownText.enabled = false;
+        }
     }
     private void Start()
     {
@@ -77,7 +98,13 @@ public class Hexagon : MonoBehaviour
     }
     private void OnDisable()
     {
+        if (score != null)
+        {
+            score(scoreAmount);
+        }
+
         GameManager.instance.allHexesList.Remove(this.gameObject);
+
         if (GameManager.instance.selectedHexesList != null && GameManager.instance.selectedHexesList.Count > 0)
         {
             GameManager.instance.selectedHexesList[0].GetComponent<Hexagon>().onDeselected?.Invoke();

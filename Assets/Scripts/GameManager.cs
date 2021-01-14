@@ -14,10 +14,13 @@ public class GameManager : MonoBehaviour
 
     public List<GameObject> allHexesList = new List<GameObject>();
 
+    public int score;
+
     public int maxHexagonCount;
 
     public bool canHexTakeNewPlace = false;
 
+    public bool spawnBomb;
 
     private void Awake()
     {
@@ -34,6 +37,15 @@ public class GameManager : MonoBehaviour
     {
         maxHexagonCount = allHexesList.Count;
     }
+    private void OnEnable()
+    {
+        Hexagon.score += AddScore;
+    }
+
+    private void OnDisable()
+    {
+        Hexagon.score -= AddScore;
+    }
     private void Update()
     {
         if (selectedHexesList != null && selectedHexesList.Count > 0)
@@ -43,6 +55,11 @@ public class GameManager : MonoBehaviour
             selectedHexesList[2].GetComponent<Hexagon>().onSelected?.Invoke();
         }
 
+    }
+
+    void AddScore(int amount)
+    {
+        score += amount;
     }
 
 }

@@ -33,7 +33,6 @@ public class GridManager : MonoBehaviour
             FindEmptyHexes();
             if (check)
             {
-                print("check");
                 check = false;
                 StartCoroutine(RequesNewHex());
             }
@@ -51,13 +50,12 @@ public class GridManager : MonoBehaviour
                     {
                         if (hexArray[x, y + 1] != null)
                         {
-                            hexArray[x, y + 1].GetComponent<Hexagon>().Move(x, y, Random.Range(0.36f, 0.45f));
+                            hexArray[x, y + 1].GetComponent<Hexagon>().Move(x, y, Random.Range(0.3f, 0.35f));
                         }
                     }
 
                 }
             }
-
         }
         catch
         {
@@ -79,7 +77,7 @@ public class GridManager : MonoBehaviour
                 break;
             }
 
-            for (int x = 0; x < 8; x++)
+            for (int x = 0; x < columnsSize; x++)
             {
                 if (x == 0)
                 {
@@ -89,12 +87,12 @@ public class GridManager : MonoBehaviour
                 {
                     yield return new WaitForSeconds(0.05f);
                 }
-                if (hexArray[x, 8] == null)
+                if (hexArray[x, rowsSize -1] == null)
                 {
                     print("empty: " + x);
                     GameObject hexRow = Instantiate(hexagon, gridParent.transform.position, Quaternion.identity);
 
-                    PlaceHexToTile(hexRow.GetComponent<Hexagon>(), GetRandomColor(), x, 8);
+                    PlaceHexToTile(hexRow.GetComponent<Hexagon>(), GetRandomColor(), x, rowsSize - 1);
                 }
             }
             yield return null;
