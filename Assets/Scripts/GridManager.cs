@@ -18,6 +18,8 @@ public class GridManager : MonoBehaviour
     public static GameObject[,] tileArray;
     public static GameObject[,] hexArray;
 
+    private bool check = true;
+
     private void Awake()
     {
         GenerateTiles();
@@ -29,35 +31,21 @@ public class GridManager : MonoBehaviour
         if (GameManager.instance.canHexTakeNewPlace)
         {
             FindEmptyHexes();
-        }
-        try
-        {
-            if (GameManager.instance.allHexesList.Count <= GameManager.instance.maxHexagonCount)
+            if (check)
             {
-                for (int x = 0; x < columnsSize - 1; x++)
-                {
-                    if (hexArray[x, rowsSize - 1].gameObject == null)
-                    {
-                        GameObject hexRow = Instantiate(hexagon, gridParent.transform.position, Quaternion.identity);
-
-                        PlaceHexToTile(hexRow.GetComponent<Hexagon>(), GetRandomColor(), x, rowsSize - 1);
-                    }
-                }
+                print("check");
+                check = false;
+                StartCoroutine(RequesNewHex());
             }
         }
-        catch 
-        {
-        }
-        
-
     }
     public void FindEmptyHexes()
     {
         try
         {
-            for (int y = 0; y < rowsSize - 1; y++)
+            for (int y = 0; y < 8; y++)
             {
-                for (int x = 0; x < columnsSize - 1; x++)
+                for (int x = 0; x < 8; x++)
                 {
                     if (hexArray[x, y] == null)
                     {
@@ -66,7 +54,7 @@ public class GridManager : MonoBehaviour
                             hexArray[x, y + 1].GetComponent<Hexagon>().Move(x, y, Random.Range(0.36f, 0.45f));
                         }
                     }
-                    
+
                 }
             }
 
@@ -79,6 +67,32 @@ public class GridManager : MonoBehaviour
     }
 
 
+    IEnumerator RequesNewHex()
+    {
+        while (GameManager.instance.allHexesList.Count <= GameManager.instance.maxHexagonCount )
+        {
+
+            if (GameManager.instance.allHexesList.Count >= GameManager.instance.maxHexagonCount)
+            {
+                GameManager.instance.maxHexagonCount = GameManager.instance.allHexesList.Count;
+                check = true;
+                break;
+            }
+
+            for (int x = 0; x < 8; x++)
+            {
+                yield return new WaitForSeconds(0.25f);
+                if (hexArray[x, 8] == null)
+                {
+                    print("empty: " + x);
+                    GameObject hexRow = Instantiate(hexagon, gridParent.transform.position, Quaternion.identity);
+                }
+            }
+            yield return null;
+        }
+
+        check = true;
+    }
 
     void GenerateTiles()
     {

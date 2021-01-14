@@ -28,9 +28,11 @@ public class Hexagon : MonoBehaviour
     internal List<GameObject> neighbours = new List<GameObject>();
     internal List<GameObject> matchedNeighbours = new List<GameObject>();
 
+    private GridManager gridManager;
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
+        GameManager.instance.allHexesList.Add(this.gameObject);
     }
     private void Start()
     {
@@ -57,12 +59,14 @@ public class Hexagon : MonoBehaviour
             try
             {
                 GridManager.hexArray[column, row] = null;
+
                 StartCoroutine(MoveRoutine(new Vector3(GridManager.tileArray[x, y].transform.position.x,
                   GridManager.tileArray[x, y].transform.position.y,
                    0),
                    x,
                    y,
                   time));
+
             }
             catch
             {
@@ -70,10 +74,6 @@ public class Hexagon : MonoBehaviour
             }
 
         }
-    }
-    private void OnEnable()
-    {
-        GameManager.instance.allHexesList.Add(this.gameObject);
     }
     private void OnDisable()
     {
@@ -86,6 +86,7 @@ public class Hexagon : MonoBehaviour
         }
 
         GameManager.instance.selectedHexesList.Clear();
+
     }
     IEnumerator MoveRoutine(Vector3 destination, int x, int y, float time)
     {
@@ -127,7 +128,7 @@ public class Hexagon : MonoBehaviour
         ClearHexes();
         neighbours.Clear();
         matchedNeighbours.Clear();
-        yield return new WaitForSeconds(0.14f);
+        yield return new WaitForSeconds(0.1f);
         canMove = true;
         neighbours.AddRange(HexSelectHandler.instance.FindNeighbours(x, y));
         AddHexes();

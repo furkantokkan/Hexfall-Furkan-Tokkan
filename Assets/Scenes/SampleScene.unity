@@ -508,6 +508,7 @@ MonoBehaviour:
   - {r: 0.7019608, g: 0.21568629, b: 0.5411765, a: 1}
   selectedHexesList: []
   allHexesList: []
+  maxHexagonCount: 0
   canHexTakeNewPlace: 0
 --- !u!4 &1018951232
 Transform:
@@ -548,7 +549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20997097bd5328e48aa407b3146a3dcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hexSwitchSpeed: 0.7
+  hexSwitchSpeed: 1
 --- !u!114 &1018951235
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -26,7 +26,6 @@ public class SwitchHexHandler : MonoBehaviour
             secondHex = GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>();
             thirdHex = GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>();
             InputManager.getInput = false;
-            GameManager.instance.canHexTakeNewPlace = false;
             StopCoroutine(TurnRoutine());
             StartCoroutine(TurnRoutine());
         }
@@ -37,6 +36,7 @@ public class SwitchHexHandler : MonoBehaviour
     {
         for (int i = 0; i < 3; i++)
         {
+            GameManager.instance.canHexTakeNewPlace = false;
             matchHandler.ClearMatch();
             if (firstHex != null)
             {
@@ -58,9 +58,9 @@ public class SwitchHexHandler : MonoBehaviour
                 MatchHandler.stopRoutine = false;
                 matchHandler.ClearMatch();
                 ResetState();
-                yield return new WaitForSeconds(0.04f);
+                yield return new WaitForSeconds(0.033f);
                 GameManager.instance.canHexTakeNewPlace = true;
-                yield return null;
+                break;
             }
             if (i == 2)
             {
