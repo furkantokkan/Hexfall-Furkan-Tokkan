@@ -6,21 +6,30 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public GameObject selectedHex;
-
     public Color[] colors;
 
-    public List<GameObject> selectedHexesList = new List<GameObject>();
+    public int bombSpawnScore = 1000;
 
-    public List<GameObject> allHexesList = new List<GameObject>();
+    [Range(3,10)]
+    public int minimumBombExplodeCount = 5, maximumBombExplodeCount = 7;
 
-    public int score;
 
-    public int maxHexagonCount;
+    internal GameObject selectedHex;
 
-    public bool canHexTakeNewPlace = false;
+    internal List<GameObject> selectedHexesList = new List<GameObject>();
 
-    public bool spawnBomb;
+    internal List<GameObject> allHexesList = new List<GameObject>();
+
+    internal int score;
+
+    internal int moves;
+
+    internal int maxHexagonCount;
+
+    internal bool canHexTakeNewPlace = false;
+
+    internal Color bombColor;
+
 
     private void Awake()
     {
@@ -54,7 +63,22 @@ public class GameManager : MonoBehaviour
             selectedHexesList[1].GetComponent<Hexagon>().onSelected?.Invoke();
             selectedHexesList[2].GetComponent<Hexagon>().onSelected?.Invoke();
         }
-
+       
+        if (bombColor.a > 0)
+        {
+            for (int i = 0; i < allHexesList.Count; i++)
+            {
+                if (allHexesList[i].GetComponent<Hexagon>().hexagonColor == bombColor)
+                {
+                    Destroy(allHexesList[i].gameObject);
+                }
+                if (i == allHexesList.Count)
+                {
+                    bombColor.a = 0;
+                }
+            }
+        }
+        
     }
 
     void AddScore(int amount)

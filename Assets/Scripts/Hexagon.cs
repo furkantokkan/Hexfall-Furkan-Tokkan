@@ -17,7 +17,7 @@ public class Hexagon : MonoBehaviour
 
     internal bool canMove = true;
     internal bool reached;
-    internal bool bomb;
+    internal bool isBomb;
 
     [SerializeField] internal UnityEvent onSelected;
     [SerializeField] internal UnityEvent onDeselected;
@@ -32,9 +32,11 @@ public class Hexagon : MonoBehaviour
     internal List<GameObject> neighbours = new List<GameObject>();
     internal List<GameObject> matchedNeighbours = new List<GameObject>();
 
-    private GridManager gridManager;
-    public SpriteRenderer bombSprite;
+    internal int targetExplodeCount;
 
+    private GridManager gridManager;
+
+    public SpriteRenderer bombSprite;
     public Text bombCountDownText;
 
     public static Action<int> score;
@@ -43,23 +45,26 @@ public class Hexagon : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         GameManager.instance.allHexesList.Add(this.gameObject);
-
-        if (bomb)
-        {
-            bombSprite.enabled = true;
-            bombCountDownText.enabled = true;
-        }
-        else
-        {
-            bombSprite.enabled = false;
-            bombCountDownText.enabled = false;
-        }
     }
     private void Start()
     {
         neighbours.AddRange(HexSelectHandler.instance.FindNeighbours(column, row));
         AddHexes();
         CheckMatchedNeighbours();
+    }
+    private void Update()
+    {
+        if (isBomb)
+        {
+            int count = GameManager.instance.moves - targetExplodeCount;
+
+            bombCountDownText.text = Mathf.Abs(count).ToString();
+
+            if (GameManager.instance.moves >= targetExplodeCount)
+            {
+                print("GAME OVER");
+            }
+        }
     }
     public void SetHexCoordinate(int x, int y)
     {
@@ -101,6 +106,11 @@ public class Hexagon : MonoBehaviour
         if (score != null)
         {
             score(scoreAmount);
+        }
+
+        if (isBomb)
+        {
+            GameManager.instance.bombColor = hexagonColor;
         }
 
         GameManager.instance.allHexesList.Remove(this.gameObject);

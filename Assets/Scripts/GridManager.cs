@@ -20,6 +20,7 @@ public class GridManager : MonoBehaviour
 
     private bool check = true;
 
+    private int bombScoreCounter;
     private void Awake()
     {
         GenerateTiles();
@@ -38,6 +39,20 @@ public class GridManager : MonoBehaviour
             }
         }
     }
+    private void OnEnable()
+    {
+        Hexagon.score += AddScoreToCounter;
+    }
+    private void OnDisable()
+    {
+        Hexagon.score -= AddScoreToCounter;
+    }
+
+    void AddScoreToCounter(int amount)
+    {
+        bombScoreCounter += amount;
+    }
+
     public void FindEmptyHexes()
     {
         try
@@ -89,10 +104,20 @@ public class GridManager : MonoBehaviour
                 }
                 if (hexArray[x, rowsSize -1] == null)
                 {
-                    print("empty: " + x);
                     GameObject hexRow = Instantiate(hexagon, gridParent.transform.position, Quaternion.identity);
+                    Hexagon hex = hexRow.GetComponent<Hexagon>();
 
-                    PlaceHexToTile(hexRow.GetComponent<Hexagon>(), GetRandomColor(), x, rowsSize - 1);
+                    if (bombScoreCounter >= GameManager.instance.bombSpawnScore)
+                    {
+                        hex.isBomb = true;
+                        hex.bombSprite.enabled = true;
+                        hex.bombCountDownText.enabled = true;
+                        hex.targetExplodeCount = GameManager.instance.moves + Random.Range(GameManager.instance.minimumBombExplodeCount,
+                            GameManager.instance.maximumBombExplodeCount);
+                        bombScoreCounter = 0;
+                    }
+
+                    PlaceHexToTile(hex, GetRandomColor(), x, rowsSize - 1);
                 }
             }
             yield return null;

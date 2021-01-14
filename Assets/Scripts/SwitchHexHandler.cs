@@ -58,12 +58,14 @@ public class SwitchHexHandler : MonoBehaviour
                 MatchHandler.stopRoutine = false;
                 matchHandler.ClearMatch();
                 ResetState();
+                GameManager.instance.moves++;
                 yield return new WaitForSeconds(0.033f);
                 GameManager.instance.canHexTakeNewPlace = true;
                 break;
             }
             if (i == 2)
             {
+                GameManager.instance.moves++;
                 GameManager.instance.canHexTakeNewPlace = true;
                 InputManager.getInput = true;
             }

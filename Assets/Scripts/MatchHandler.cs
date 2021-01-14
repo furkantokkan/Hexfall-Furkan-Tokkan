@@ -61,8 +61,7 @@ public class MatchHandler : MonoBehaviour
         }
         catch
         {
-
-
+            Debug.Log("Hex Destroyed");
         }
 
     }
