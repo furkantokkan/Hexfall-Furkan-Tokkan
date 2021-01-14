@@ -83,7 +83,7 @@ public class GridManager : MonoBehaviour
             {
                 if (x == 0)
                 {
-                    yield return new WaitForSeconds(0.25f);
+                    yield return new WaitForSeconds(0.4f);
                 }
                 else
                 {
