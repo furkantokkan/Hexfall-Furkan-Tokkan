@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
 
    public void ResetButton()
     {
+        print("reset");
         SceneManager.LoadScene(0);
     }
 
