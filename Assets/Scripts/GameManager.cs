@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    private UIManager uıManager;
+
     public Color[] colors;
 
     public int bombSpawnScore = 1000;
@@ -41,6 +43,8 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        uıManager = GameObject.Find("UI").GetComponent<UIManager>();
     }
     private void Start()
     {
@@ -84,6 +88,7 @@ public class GameManager : MonoBehaviour
     void AddScore(int amount)
     {
         score += amount;
+        uıManager.UpdateScoreText();
     }
 
 }

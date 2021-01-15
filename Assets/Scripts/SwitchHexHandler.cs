@@ -11,11 +11,12 @@ public class SwitchHexHandler : MonoBehaviour
 
     private MatchHandler matchHandler;
     private GridManager gridManager;
-
+    private UIManager uıManager;
     private void Awake()
     {
         matchHandler = GetComponent<MatchHandler>();
         gridManager = GameObject.Find("GridManager").GetComponent<GridManager>();
+        uıManager = GameObject.Find("UI").GetComponent<UIManager>();
     }
 
     public void MoveRight()
@@ -59,6 +60,7 @@ public class SwitchHexHandler : MonoBehaviour
                 matchHandler.ClearMatch();
                 ResetState();
                 GameManager.instance.moves++;
+                uıManager.UpdateMovesText();
                 yield return new WaitForSeconds(0.033f);
                 GameManager.instance.canHexTakeNewPlace = true;
                 break;
@@ -66,6 +68,7 @@ public class SwitchHexHandler : MonoBehaviour
             if (i == 2)
             {
                 GameManager.instance.moves++;
+                uıManager.UpdateMovesText();
                 GameManager.instance.canHexTakeNewPlace = true;
                 InputManager.getInput = true;
             }

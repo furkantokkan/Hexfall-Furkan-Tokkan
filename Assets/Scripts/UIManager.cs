@@ -1,18 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [Header("Text Settings")]
+    public Text scoreText;
+    public Text movesText;
+    
     void Start()
     {
-        
+        UpdateScoreText();
+        UpdateMovesText();
     }
 
-    // Update is called once per frame
-    void Update()
+   public void ResetButton()
     {
-        
+        SceneManager.LoadScene(0);
+    }
+
+    public void UpdateScoreText()
+    {
+        scoreText.text = GameManager.instance.score.ToString();
+    }
+    public void UpdateMovesText()
+    {
+        movesText.text = GameManager.instance.moves.ToString();
     }
 }
