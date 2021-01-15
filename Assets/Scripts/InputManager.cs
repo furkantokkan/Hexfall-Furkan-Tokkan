@@ -11,7 +11,6 @@ public class InputManager : MonoBehaviour
 
     public static bool getInput = true;
 
-    private bool hexSelected;
 
     private SwitchHexHandler switchHexHandler;
 
@@ -33,6 +32,18 @@ public class InputManager : MonoBehaviour
                 {
                     case TouchPhase.Began:
 
+                        direction = Vector3.zero;
+                        lastClickPos = touch.position;
+                        HexSelectHandler.selectIndex++;
+                        break;
+                    case TouchPhase.Moved:
+                        direction = lastClickPos - touch.position;
+                        lastClickPos = touch.position;
+                        break;
+                    case TouchPhase.Stationary:
+                        break;
+                    case TouchPhase.Ended:
+
                         RaycastHit hit;
                         Ray ray = Camera.main.ScreenPointToRay(touch.position);
 
@@ -42,20 +53,13 @@ public class InputManager : MonoBehaviour
 
                         }
 
-                        lastClickPos = touch.position;
-                        HexSelectHandler.selectIndex++;
-                        break;
-                    case TouchPhase.Moved:
-                        direction = lastClickPos - touch.position;
-                        lastClickPos = touch.position;
-                        direction = new Vector3(direction.x, 0, 0);
                         if (direction.x > sensivity)
                         {
 
                             if (GameManager.instance.selectedHex != null)
                             {
                                 //left
-                                switchHexHandler.MoveRight();
+                                switchHexHandler.MoveRight(false);
                             }
 
                         }
@@ -64,20 +68,8 @@ public class InputManager : MonoBehaviour
                             if (GameManager.instance.selectedHex != null)
                             {
                                 //right
-                                switchHexHandler.MoveRight();
+                                switchHexHandler.MoveRight(true);
                             }
-                        }
-                        break;
-                    case TouchPhase.Stationary:
-                        break;
-                    case TouchPhase.Ended:
-                        if (direction.x < -sensivity && direction.x > sensivity)
-                        {
-                            hexSelected = false;
-                        }
-                        else
-                        {
-                            hexSelected = true;
                         }
                         break;
                     case TouchPhase.Canceled:
@@ -105,13 +97,13 @@ public class InputManager : MonoBehaviour
                     if (direction.x > 0)
                     {
                         //left
-                        switchHexHandler.MoveRight();
+                        switchHexHandler.MoveRight(false);
 
                     }
                     else if (direction.x < 0)
                     {
                         //right
-                        switchHexHandler.MoveRight();
+                        switchHexHandler.MoveRight(true);
                     }
                 }
             }

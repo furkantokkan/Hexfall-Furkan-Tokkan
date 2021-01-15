@@ -65,7 +65,7 @@ public class GridManager : MonoBehaviour
                     {
                         if (hexArray[x, y + 1] != null)
                         {
-                            hexArray[x, y + 1].GetComponent<Hexagon>().Move(x, y, Random.Range(0.3f, 0.35f));
+                            hexArray[x, y + 1].GetComponent<Hexagon>().Move(x, y, Random.Range(0.20f, 0.25f));
                         }
                     }
 

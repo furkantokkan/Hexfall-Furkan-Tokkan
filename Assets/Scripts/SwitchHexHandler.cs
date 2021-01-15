@@ -10,16 +10,14 @@ public class SwitchHexHandler : MonoBehaviour
     internal Hexagon thirdHex;
 
     private MatchHandler matchHandler;
-    private GridManager gridManager;
     private UIManager uıManager;
     private void Awake()
     {
         matchHandler = GetComponent<MatchHandler>();
-        gridManager = GameObject.Find("GridManager").GetComponent<GridManager>();
         uıManager = GameObject.Find("UI").GetComponent<UIManager>();
     }
 
-    public void MoveRight()
+    public void MoveRight(bool moveRight)
     {
         if (GameManager.instance.selectedHexesList != null && GameManager.instance.selectedHex != null)
         {
@@ -27,13 +25,12 @@ public class SwitchHexHandler : MonoBehaviour
             secondHex = GameManager.instance.selectedHexesList[1].GetComponent<Hexagon>();
             thirdHex = GameManager.instance.selectedHexesList[2].GetComponent<Hexagon>();
             InputManager.getInput = false;
-            StopCoroutine(TurnRoutine());
-            StartCoroutine(TurnRoutine());
+            StartCoroutine(TurnRoutine(moveRight));
         }
 
     }
 
-    IEnumerator TurnRoutine()
+    IEnumerator TurnRoutine(bool moveRight)
     {
         for (int i = 0; i < 3; i++)
         {
@@ -48,23 +45,41 @@ public class SwitchHexHandler : MonoBehaviour
                 ResetState();
                 GameManager.instance.moves++;
                 uıManager.UpdateMovesText();
-                yield return new WaitForSeconds(0.033f);
+                yield return new WaitForSeconds(0.04f);
                 GameManager.instance.canHexTakeNewPlace = true;
                 break;
             }
-
-            if (firstHex != null)
+            if (moveRight)
             {
-                firstHex.Move(secondHex.column, secondHex.row, hexSwitchSpeed);
+                if (firstHex != null)
+                {
+                    firstHex.Move(secondHex.column, secondHex.row, hexSwitchSpeed);
+                }
+                if (secondHex != null)
+                {
+                    secondHex.Move(thirdHex.column, thirdHex.row, hexSwitchSpeed);
+                }
+                if (thirdHex != null)
+                {
+                    thirdHex.Move(firstHex.column, firstHex.row, hexSwitchSpeed);
+                }
             }
-            if (secondHex != null)
+            else
             {
-                secondHex.Move(thirdHex.column, thirdHex.row, hexSwitchSpeed);
+                if (firstHex != null)
+                {
+                    firstHex.Move(thirdHex.column, thirdHex.row, hexSwitchSpeed);
+                }
+                if (secondHex != null)
+                {
+                    secondHex.Move(firstHex.column, firstHex.row, hexSwitchSpeed);
+                }
+                if (thirdHex != null)
+                {
+                    thirdHex.Move(secondHex.column, secondHex.row, hexSwitchSpeed);
+                }
             }
-            if (thirdHex != null)
-            {
-                thirdHex.Move(firstHex.column, firstHex.row, hexSwitchSpeed);
-            }
+            
             yield return new WaitForSeconds(hexSwitchSpeed);
             matchHandler.AddMatch();
             if (i == 2)
