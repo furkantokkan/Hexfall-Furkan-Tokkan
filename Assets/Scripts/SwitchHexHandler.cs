@@ -44,7 +44,7 @@ public class SwitchHexHandler : MonoBehaviour
                 ResetState();
                 GameManager.instance.moves++;
                 uıManager.UpdateMovesText();
-                yield return new WaitForSeconds(0.33f);
+                yield return new WaitForSeconds(0.4f);
                 GameManager.instance.canHexTakeNewPlace = true;
                 break;
             }
