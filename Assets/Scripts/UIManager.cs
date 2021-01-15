@@ -9,14 +9,27 @@ public class UIManager : MonoBehaviour
     [Header("Text Settings")]
     public Text scoreText;
     public Text movesText;
+
+    public GameObject gameOverPanel;
     
     void Start()
     {
         UpdateScoreText();
         UpdateMovesText();
     }
+    private void Update()
+    {
+        if (GameManager.instance.gameOver)
+        {
+            gameOverPanel.SetActive(true);
+        }
+        else
+        {
+            gameOverPanel.SetActive(false);
+        }
+    }
 
-   public void ResetButton()
+    public void ResetButton()
     {
         print("reset");
         SceneManager.LoadScene(0);

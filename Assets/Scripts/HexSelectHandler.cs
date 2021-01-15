@@ -13,7 +13,7 @@ public class HexSelectHandler : MonoBehaviour
 
     public static int selectIndex = 0;
 
-    private GameObject lastHex;
+    internal GameObject lastHex;
 
     public static HexSelectHandler instance;
 

@@ -1,10 +1,10 @@
 {
     "m_SelectedDeviceId": "520023de53a325a7",
     "m_SelectedPackage": {
-        "deviceId": "520023de53a325a7",
-        "name": "com.DefaultCompany.com.unity.template.mobile2D",
-        "processId": 7156,
-        "exited": true
+        "deviceId": "",
+        "name": "",
+        "processId": 0,
+        "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
@@ -17,48 +17,6 @@
         {
             "deviceId": "520023de53a325a7",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 24805,
-            "exited": true
-        },
-        {
-            "deviceId": "520023de53a325a7",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 25954,
-            "exited": true
-        },
-        {
-            "deviceId": "520023de53a325a7",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 26936,
-            "exited": true
-        },
-        {
-            "deviceId": "520023de53a325a7",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 28265,
-            "exited": true
-        },
-        {
-            "deviceId": "520023de53a325a7",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 30237,
-            "exited": true
-        },
-        {
-            "deviceId": "520023de53a325a7",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 31386,
-            "exited": false
-        },
-        {
-            "deviceId": "520023de53a325a7",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 991,
-            "exited": true
-        },
-        {
-            "deviceId": "520023de53a325a7",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
             "processId": 3982,
             "exited": true
         },
@@ -66,6 +24,78 @@
             "deviceId": "520023de53a325a7",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
             "processId": 7156,
+            "exited": true
+        },
+        {
+            "deviceId": "520023de53a325a7",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 9145,
+            "exited": true
+        },
+        {
+            "deviceId": "520023de53a325a7",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 10792,
+            "exited": true
+        },
+        {
+            "deviceId": "520023de53a325a7",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 12671,
+            "exited": true
+        },
+        {
+            "deviceId": "520023de53a325a7",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 15223,
+            "exited": true
+        },
+        {
+            "deviceId": "520023de53a325a7",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 16457,
+            "exited": true
+        },
+        {
+            "deviceId": "520023de53a325a7",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 17613,
+            "exited": true
+        },
+        {
+            "deviceId": "520023de53a325a7",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 19416,
+            "exited": true
+        },
+        {
+            "deviceId": "520023de53a325a7",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 21997,
+            "exited": false
+        },
+        {
+            "deviceId": "520023de53a325a7",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 23437,
+            "exited": true
+        },
+        {
+            "deviceId": "520023de53a325a7",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 25334,
+            "exited": true
+        },
+        {
+            "deviceId": "520023de53a325a7",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 27346,
+            "exited": true
+        },
+        {
+            "deviceId": "520023de53a325a7",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 29245,
             "exited": true
         }
     ],

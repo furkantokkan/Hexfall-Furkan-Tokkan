@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour
     [Range(3,10)]
     public int minimumBombExplodeCount = 5, maximumBombExplodeCount = 7;
 
-
     internal GameObject selectedHex;
 
     internal List<GameObject> selectedHexesList = new List<GameObject>();
@@ -31,6 +30,8 @@ public class GameManager : MonoBehaviour
     internal bool canHexTakeNewPlace = false;
 
     internal Color bombColor;
+
+    internal bool gameOver = false;
 
 
     private void Awake()

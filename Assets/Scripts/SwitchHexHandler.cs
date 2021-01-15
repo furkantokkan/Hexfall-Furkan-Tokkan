@@ -39,6 +39,20 @@ public class SwitchHexHandler : MonoBehaviour
         {
             GameManager.instance.canHexTakeNewPlace = false;
             matchHandler.ClearMatch();
+
+            if (MatchHandler.stopRoutine)
+            {
+                InputManager.getInput = true;
+                MatchHandler.stopRoutine = false;
+                matchHandler.ClearMatch();
+                ResetState();
+                GameManager.instance.moves++;
+                uıManager.UpdateMovesText();
+                yield return new WaitForSeconds(0.033f);
+                GameManager.instance.canHexTakeNewPlace = true;
+                break;
+            }
+
             if (firstHex != null)
             {
                 firstHex.Move(secondHex.column, secondHex.row, hexSwitchSpeed);
@@ -53,18 +67,6 @@ public class SwitchHexHandler : MonoBehaviour
             }
             yield return new WaitForSeconds(hexSwitchSpeed);
             matchHandler.AddMatch();
-            if (MatchHandler.stopRoutine)
-            {
-                InputManager.getInput = true;
-                MatchHandler.stopRoutine = false;
-                matchHandler.ClearMatch();
-                ResetState();
-                GameManager.instance.moves++;
-                uıManager.UpdateMovesText();
-                yield return new WaitForSeconds(0.033f);
-                GameManager.instance.canHexTakeNewPlace = true;
-                break;
-            }
             if (i == 2)
             {
                 GameManager.instance.moves++;

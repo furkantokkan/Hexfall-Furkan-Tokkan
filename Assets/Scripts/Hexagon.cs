@@ -62,7 +62,7 @@ public class Hexagon : MonoBehaviour
 
             if (GameManager.instance.moves >= targetExplodeCount)
             {
-                print("GAME OVER");
+                GameManager.instance.gameOver = true;
             }
         }
     }
@@ -289,10 +289,10 @@ public class Hexagon : MonoBehaviour
 
         //check axis
     }
-
+    #region Mouse
     private void OnMouseDown()
     {
-        if (Input.GetMouseButtonDown(0) && InputManager.getInput)
+        if (Input.GetMouseButtonDown(0) && InputManager.getInput && !GameManager.instance.gameOver)
         {
             GameManager.instance.selectedHex = this.gameObject;
             if (InputManager.getInput)
@@ -303,7 +303,7 @@ public class Hexagon : MonoBehaviour
             }
         }
     }
-
+    #endregion
     void AddHexes()
     {
         try
