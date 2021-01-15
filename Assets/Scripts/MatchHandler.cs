@@ -11,7 +11,7 @@ public class MatchHandler : MonoBehaviour
     public List<GameObject> secondHexMatch = new List<GameObject>();
     public List<GameObject> thirdHexMatch = new List<GameObject>();
 
-    public static bool stopRoutine;
+    internal bool stopRoutine;
 
 
     private void Awake()

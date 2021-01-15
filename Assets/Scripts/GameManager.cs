@@ -8,12 +8,19 @@ public class GameManager : MonoBehaviour
 
     private UIManager uıManager;
 
+
+    [Header("Game Settings")]
     public Color[] colors;
 
     public int bombSpawnScore = 1000;
 
-    [Range(3,10)]
+    [Range(3, 10)]
     public int minimumBombExplodeCount = 5, maximumBombExplodeCount = 7;
+
+    [Header("Hexagon Settings")]
+    public float hexSwitchSpeed = 1f;
+
+    public int hexScoreAmount = 5;
 
     internal GameObject selectedHex;
 

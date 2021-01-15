@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
+    [Header("Transform Settings")]
     public Transform gridParent;
     public Transform hexParent;
     public GameObject positionHolder;
+    [Header("Game Pice Settings")]
     public GameObject hexagon;
-
-    public int columnsSize = 8; //left
-    public int rowsSize = 9; //up 
+    [Header("Board Settings")]
+    public int columnsSize = 8; //x
+    public int rowsSize = 9; //y
 
     private GameObject lastYHex;
     private GameObject lastXHex;

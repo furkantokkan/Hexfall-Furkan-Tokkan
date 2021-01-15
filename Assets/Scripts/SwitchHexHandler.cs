@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SwitchHexHandler : MonoBehaviour
 {
-    public float hexSwitchSpeed = 1f;
     internal Hexagon firstHex;
     internal Hexagon secondHex;
     internal Hexagon thirdHex;
@@ -37,50 +36,51 @@ public class SwitchHexHandler : MonoBehaviour
             GameManager.instance.canHexTakeNewPlace = false;
             matchHandler.ClearMatch();
 
-            if (MatchHandler.stopRoutine)
+            if (matchHandler.stopRoutine)
             {
                 InputManager.getInput = true;
-                MatchHandler.stopRoutine = false;
+                matchHandler.stopRoutine = false;
                 matchHandler.ClearMatch();
                 ResetState();
                 GameManager.instance.moves++;
                 uıManager.UpdateMovesText();
-                yield return new WaitForSeconds(0.04f);
+                yield return new WaitForSeconds(0.33f);
                 GameManager.instance.canHexTakeNewPlace = true;
                 break;
             }
+
             if (moveRight)
             {
                 if (firstHex != null)
                 {
-                    firstHex.Move(secondHex.column, secondHex.row, hexSwitchSpeed);
+                    firstHex.Move(secondHex.column, secondHex.row, GameManager.instance.hexSwitchSpeed);
                 }
                 if (secondHex != null)
                 {
-                    secondHex.Move(thirdHex.column, thirdHex.row, hexSwitchSpeed);
+                    secondHex.Move(thirdHex.column, thirdHex.row, GameManager.instance.hexSwitchSpeed);
                 }
                 if (thirdHex != null)
                 {
-                    thirdHex.Move(firstHex.column, firstHex.row, hexSwitchSpeed);
+                    thirdHex.Move(firstHex.column, firstHex.row, GameManager.instance.hexSwitchSpeed);
                 }
             }
             else
             {
                 if (firstHex != null)
                 {
-                    firstHex.Move(thirdHex.column, thirdHex.row, hexSwitchSpeed);
+                    firstHex.Move(thirdHex.column, thirdHex.row, GameManager.instance.hexSwitchSpeed);
                 }
                 if (secondHex != null)
                 {
-                    secondHex.Move(firstHex.column, firstHex.row, hexSwitchSpeed);
+                    secondHex.Move(firstHex.column, firstHex.row, GameManager.instance.hexSwitchSpeed);
                 }
                 if (thirdHex != null)
                 {
-                    thirdHex.Move(secondHex.column, secondHex.row, hexSwitchSpeed);
+                    thirdHex.Move(secondHex.column, secondHex.row, GameManager.instance.hexSwitchSpeed);
                 }
             }
             
-            yield return new WaitForSeconds(hexSwitchSpeed);
+            yield return new WaitForSeconds(GameManager.instance.hexSwitchSpeed);
             matchHandler.AddMatch();
             if (i == 2)
             {

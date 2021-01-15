@@ -7,20 +7,24 @@ using UnityEngine.UI;
 
 public class Hexagon : MonoBehaviour
 {
-    public int column; //left right
-    public int row; //up down
+    [Header("Hex Coordinate")]
+    public int column; //x
+    public int row; //y
+    [Header("Bomb Hex Settings")]
+    public SpriteRenderer bombSprite;
+    public Text bombCountDownText;
+    [Header("Hex Select Settings")]
 
-    public int scoreAmount = 5;
+    [SerializeField] internal UnityEvent onSelected;
+    [SerializeField] internal UnityEvent onDeselected;
 
-    public Color hexagonColor;
+    internal Color hexagonColor;
     private SpriteRenderer sr;
 
     internal bool canMove = true;
     internal bool reached;
     internal bool isBomb;
 
-    [SerializeField] internal UnityEvent onSelected;
-    [SerializeField] internal UnityEvent onDeselected;
 
     internal GameObject upHex;
     internal GameObject upLeftHex;
@@ -36,8 +40,7 @@ public class Hexagon : MonoBehaviour
 
     private GridManager gridManager;
 
-    public SpriteRenderer bombSprite;
-    public Text bombCountDownText;
+
 
     public static Action<int> score;
 
@@ -105,7 +108,7 @@ public class Hexagon : MonoBehaviour
     {
         if (score != null)
         {
-            score(scoreAmount);
+            score(GameManager.instance.hexScoreAmount);
         }
 
         if (isBomb)

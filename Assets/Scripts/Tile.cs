@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+    [Header("Tile Coordinate")]
     public int tileColumn; //left right
     public int tileRow; //up down
 

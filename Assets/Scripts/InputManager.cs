@@ -31,7 +31,6 @@ public class InputManager : MonoBehaviour
                 switch (touch.phase)
                 {
                     case TouchPhase.Began:
-
                         direction = Vector3.zero;
                         lastClickPos = touch.position;
                         HexSelectHandler.selectIndex++;
@@ -41,9 +40,6 @@ public class InputManager : MonoBehaviour
                         lastClickPos = touch.position;
                         break;
                     case TouchPhase.Stationary:
-                        break;
-                    case TouchPhase.Ended:
-
                         RaycastHit hit;
                         Ray ray = Camera.main.ScreenPointToRay(touch.position);
 
@@ -52,7 +48,8 @@ public class InputManager : MonoBehaviour
                             GameManager.instance.selectedHex = hit.collider.gameObject;
 
                         }
-
+                        break;
+                    case TouchPhase.Ended:
                         if (direction.x > sensivity)
                         {
 
