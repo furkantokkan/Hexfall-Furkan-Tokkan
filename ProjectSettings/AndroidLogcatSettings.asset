@@ -3,39 +3,63 @@
     "m_SelectedPackage": {
         "deviceId": "520023de53a325a7",
         "name": "com.DefaultCompany.com.unity.template.mobile2D",
-        "processId": 12641,
+        "processId": 3982,
         "exited": true
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
         {
             "deviceId": "520023de53a325a7",
+            "name": "com.sec.android.app.launcher",
+            "processId": 22191,
+            "exited": false
+        },
+        {
+            "deviceId": "520023de53a325a7",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 28469,
+            "processId": 24805,
             "exited": true
         },
         {
             "deviceId": "520023de53a325a7",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 1064,
+            "processId": 25954,
             "exited": true
         },
         {
             "deviceId": "520023de53a325a7",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 2332,
+            "processId": 26936,
             "exited": true
         },
         {
             "deviceId": "520023de53a325a7",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 5241,
+            "processId": 28265,
             "exited": true
         },
         {
             "deviceId": "520023de53a325a7",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 12641,
+            "processId": 30237,
+            "exited": true
+        },
+        {
+            "deviceId": "520023de53a325a7",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 31386,
+            "exited": false
+        },
+        {
+            "deviceId": "520023de53a325a7",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 991,
+            "exited": true
+        },
+        {
+            "deviceId": "520023de53a325a7",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 3982,
             "exited": true
         }
     ],
